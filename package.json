@@ -1,0 +1,25 @@
+{
+  "name": "harvard_course_quiz",
+  "version": "1.0.0",
+  "description": "Makes a simple web quiz",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Colin-Fredericks/harvard_course_quiz.git"
+  },
+  "author": "Colin Fredericks",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Colin-Fredericks/harvard_course_quiz/issues"
+  },
+  "homepage": "https://github.com/Colin-Fredericks/harvard_course_quiz#readme",
+  "dependencies": {
+    "@types/dompurify": "^2.4.0",
+    "@types/marked": "^4.0.8",
+    "dompurify": "^2.4.3",
+    "marked": "^4.2.5"
+  }
+}
