@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/Colin-Fredericks/harvard_course_quiz#readme",
   "dependencies": {
+    "@materializecss/materialize": "^1.2.1",
     "@types/dompurify": "^2.4.0",
     "@types/marked": "^4.0.8",
     "dompurify": "^2.4.3",
