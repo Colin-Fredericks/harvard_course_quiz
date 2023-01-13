@@ -1,21 +1,21 @@
-#breadcrumbs{
-    border: none;
+#breadcrumbs {
+  border: none;
 }
 
 #header {
-    border:none;
+  border: none;
 }
 
 #question {
-    font-size: xx-large;
-    border:none;
+  font-size: xx-large;
+  font-style: italic;
+  border: none;
 }
 
 #options {
-    font-size: regular;
-    border:none;
+  border: none;
 }
 
-#harvard{
-    border:none;
+#harvard {
+  border: none;
 }
