@@ -1,0 +1,7 @@
+{
+    "compilerOptions": {},
+    "baseUrl": "./",
+    "input": [ "src/*.ts" ],
+    "outDir": "js",
+    "sourceMap": true
+}
