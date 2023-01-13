@@ -3,6 +3,26 @@
 // import 'css/materialize.min.js';
 
 /**
+ * @description Processes the data from a file into a nested structure.
+ * @param data The data to process, in text form.
+ * @returns A nested structure of objects containing the data.
+ */
+function processData(data: string): any {
+  let data_structure: any = {};
+  let lines = data.split('\n');
+  // Get the depth of each line
+  let grid = lines.map(function (line) {
+    return {
+      depth: line.split('\t').length - 1,
+      text: line.trim(),
+    };
+  });
+  // TODO: Build the nested structure.
+
+  return data_structure;
+}
+
+/**
  * @description Reads in data from the data file with custom format.
  * @param {string} filename The name of the file to read.
  * @returns {Object} The data object.
@@ -13,6 +33,8 @@ function readData(filename: string): string {
     .then((response) => response.text())
     .then((data) => {
       console.log(data);
+      let data_structure = processData(data);
+      console.log(data_structure);
       // Parse the data into an object
       return data;
     })
