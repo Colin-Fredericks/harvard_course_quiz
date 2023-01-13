@@ -9,7 +9,7 @@
  */
 function readData(filename: string): string {
   // Read in the file
-  fetch('data/Course_Quiz.txt')
+  fetch('data/' + filename)
     .then((response) => response.text())
     .then((data) => {
       console.log(data);
@@ -18,9 +18,9 @@ function readData(filename: string): string {
     })
     .catch((error) => {
       console.log(error);
-      return '';
+      return 'no data';
     });
-  return '';
+  return 'no data';
 }
 
 /**
@@ -74,12 +74,10 @@ function makeBreadcrumbs(breadcrumbs: string[]): HTMLElement {
  */
 function setupLinkListeners(): void {
   // When someone clicks a link...
-  document.querySelectorAll('a').forEach((link) => {
+  document.querySelectorAll('main a').forEach((link) => {
     link.addEventListener('click', (event) => {
       event.preventDefault();
-      slideTransition(
-        document.querySelector('main'),
-        'left', 'out');
+      slideTransition(document.querySelector('main'), 'left', 'out');
     });
   });
   // Get the html for where we're going
@@ -99,7 +97,7 @@ function setupBreadcrumbListeners(): void {
 }
 
 let depth = 0;
-// let data = readData('Course_Quiz.txt');
+let data = readData('Course_Quiz.txt');
 let header_box = document.getElementById('header');
 let question_box = document.getElementById('questions');
 let option_box = document.getElementById('options');

@@ -8,7 +8,7 @@
  */
 function readData(filename) {
     // Read in the file
-    fetch('data/Course_Quiz.txt')
+    fetch('data/' + filename)
         .then(function (response) { return response.text(); })
         .then(function (data) {
         console.log(data);
@@ -16,9 +16,9 @@ function readData(filename) {
         return data;
     })["catch"](function (error) {
         console.log(error);
-        return '';
+        return 'no data';
     });
-    return '';
+    return 'no data';
 }
 /**
  * @description Slides an element to the left while fading it out.
@@ -64,7 +64,7 @@ function makeBreadcrumbs(breadcrumbs) {
  */
 function setupLinkListeners() {
     // When someone clicks a link...
-    document.querySelectorAll('a').forEach(function (link) {
+    document.querySelectorAll('main a').forEach(function (link) {
         link.addEventListener('click', function (event) {
             event.preventDefault();
             slideTransition(document.querySelector('main'), 'left', 'out');
@@ -85,7 +85,7 @@ function setupBreadcrumbListeners() {
     // Reset the listeners
 }
 var depth = 0;
-// let data = readData('Course_Quiz.txt');
+var data = readData('Course_Quiz.txt');
 var header_box = document.getElementById('header');
 var question_box = document.getElementById('questions');
 var option_box = document.getElementById('options');

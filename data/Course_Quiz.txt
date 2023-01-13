@@ -114,9 +114,3 @@ Learning something fun and new!
 		Title: Mysteries
 	Music, Art, and Literature
 		Title: Music, Art, and Literature
-
-
-Remove blank lines.
-Parse for tabs to set structure. If there are none, parse for 4 spaces.
-Parse things before the colon as the page header and after as markdown.
-First option in the list is the page text.
