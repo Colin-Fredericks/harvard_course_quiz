@@ -7,18 +7,27 @@
  * @param {Array} The array of lines of data, with depth and text.
  * @returns {Object} The nested structure of the data.
  */
-function buildStructure(grid: any[], depth=0): any {
-    let data_structure: any = {};
-    let current_depth = depth;
-    let current_line = grid.shift();
-    while (current_line.depth > current_depth) {
-        let key = current_line.text.split(':')[0];
-        console.log(key);
-        data_structure[key] = buildStructure(grid, current_depth + 1);
-        current_line = grid.shift();
+function buildStructure(grid: any[], current_depth = 0): any {
+  let data_structure: any = {};
+  let current_line = grid.shift();
+
+  while (current_line.depth >= current_depth) {
+    let key = current_line.text.split(':');
+    console.log(key);
+
+    if (key.length === 1) {
+      data_structure[key[0].trim()] = buildStructure(grid, current_depth + 1);
+    } else {
+      data_structure[key[0].trim()] = key[1].trim();
     }
-    grid.unshift(current_line);
-    return data_structure;
+    current_line = grid.shift();
+
+    // Stop if we've reached the end of the file
+    if (typeof current_line === 'undefined') {
+      break;
+    }
+  }
+  return data_structure;
 }
 
 
@@ -37,6 +46,9 @@ async function processData(data: string): Promise<any> {
       text: line.trim(),
     };
   });
+  // Remove empty lines
+  grid = grid.filter((line) => line.text.length > 0);
+  // console.debug(grid);
   // Build the nested structure.
   return buildStructure(grid);
 
@@ -51,7 +63,7 @@ async function readData(filename: string): Promise<string> {
   // Read in the file
   fetch('data/' + filename)
     .then((response) => response.text())
-    .then(async function(data){
+    .then(async function (data) {
       console.log(data);
       let data_structure = await processData(data);
       console.log(data_structure);

@@ -15,17 +15,24 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
  * @param {Array} The array of lines of data, with depth and text.
  * @returns {Object} The nested structure of the data.
  */
-function buildStructure(grid, depth = 0) {
+function buildStructure(grid, current_depth = 0) {
     let data_structure = {};
-    let current_depth = depth;
     let current_line = grid.shift();
-    while (current_line.depth > current_depth) {
-        let key = current_line.text.split(':')[0];
+    while (current_line.depth >= current_depth) {
+        let key = current_line.text.split(':');
         console.log(key);
-        data_structure[key] = buildStructure(grid, current_depth + 1);
+        if (key.length === 1) {
+            data_structure[key[0].trim()] = buildStructure(grid, current_depth + 1);
+        }
+        else {
+            data_structure[key[0].trim()] = key[1].trim();
+        }
         current_line = grid.shift();
+        // Stop if we've reached the end of the file
+        if (typeof current_line === 'undefined') {
+            break;
+        }
     }
-    grid.unshift(current_line);
     return data_structure;
 }
 /**
@@ -44,6 +51,9 @@ function processData(data) {
                 text: line.trim(),
             };
         });
+        // Remove empty lines
+        grid = grid.filter((line) => line.text.length > 0);
+        // console.debug(grid);
         // Build the nested structure.
         return buildStructure(grid);
     });
