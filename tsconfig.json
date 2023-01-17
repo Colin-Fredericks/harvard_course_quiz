@@ -1,7 +1,9 @@
 {
-    "compilerOptions": {},
+    "compilerOptions": {
+        "target": "ES2016"
+    },
     "baseUrl": "./",
     "input": [ "src/*.ts" ],
     "outDir": "js",
-    "sourceMap": true
+    "sourceMap": true,
 }
