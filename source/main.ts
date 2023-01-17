@@ -11,12 +11,18 @@ function buildStructure(grid: any[], current_depth = 0): any {
   let data_structure: any = {};
   let current_line = grid.shift();
 
+  // TODO: something is wrong here. I'm iterating through the
+  // lines, but I think I'm overwriting the data_structure.
+
+
   while (current_line.depth >= current_depth) {
     let key = current_line.text.split(':');
     console.log(key);
 
     if (key.length === 1) {
-      data_structure[key[0].trim()] = buildStructure(grid, current_depth + 1);
+      data_structure["contents"] = {
+        [key[0].trim()]: buildStructure(grid, current_depth + 1)
+      };
     } else {
       data_structure[key[0].trim()] = key[1].trim();
     }
@@ -95,6 +101,7 @@ function slideTransition(
   element.addEventListener('animationend', () => {
     element.remove();
   });
+  // TODO: handle focus
 }
 
 /**
