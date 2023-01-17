@@ -3,11 +3,31 @@
 // import 'css/materialize.min.js';
 
 /**
+ * @description: Builds the nested structure of the data.
+ * @param {Array} The array of lines of data, with depth and text.
+ * @returns {Object} The nested structure of the data.
+ */
+function buildStructure(grid: any[], depth=0): any {
+    let data_structure: any = {};
+    let current_depth = depth;
+    let current_line = grid.shift();
+    while (current_line.depth > current_depth) {
+        let key = current_line.text.split(':')[0];
+        console.log(key);
+        data_structure[key] = buildStructure(grid, current_depth + 1);
+        current_line = grid.shift();
+    }
+    grid.unshift(current_line);
+    return data_structure;
+}
+
+
+/**
  * @description Processes the data from a file into a nested structure.
  * @param data The data to process, in text form.
  * @returns A nested structure of objects containing the data.
  */
-function processData(data: string): any {
+async function processData(data: string): Promise<any> {
   let data_structure: any = {};
   let lines = data.split('\n');
   // Get the depth of each line
@@ -17,9 +37,9 @@ function processData(data: string): any {
       text: line.trim(),
     };
   });
-  // TODO: Build the nested structure.
+  // Build the nested structure.
+  return buildStructure(grid);
 
-  return data_structure;
 }
 
 /**
@@ -27,13 +47,13 @@ function processData(data: string): any {
  * @param {string} filename The name of the file to read.
  * @returns {Object} The data object.
  */
-function readData(filename: string): string {
+async function readData(filename: string): Promise<string> {
   // Read in the file
   fetch('data/' + filename)
     .then((response) => response.text())
-    .then((data) => {
+    .then(async function(data){
       console.log(data);
-      let data_structure = processData(data);
+      let data_structure = await processData(data);
       console.log(data_structure);
       // Parse the data into an object
       return data;
