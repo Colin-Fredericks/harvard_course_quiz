@@ -46,6 +46,7 @@ function insertData(data_structure, path, key, value) {
  *  }
  * }
  */
+// TODO: 
 function buildStructure(grid) {
     let data_structure = { "name": "", "data": {}, "contents": {} };
     let path = [];
@@ -63,8 +64,11 @@ function buildStructure(grid) {
         }
         if (last_depth > grid[i].depth) {
             // If we're going back up the tree, remove the last item
-            // from the path
-            path.pop();
+            // and "contents" from the path for each step back
+            for (let j = 0; j < last_depth - grid[i].depth; j++) {
+                path.pop();
+                path.pop();
+            }
         }
         // If there's a key-value pair, add it to the data
         if (typeof value !== "undefined") {

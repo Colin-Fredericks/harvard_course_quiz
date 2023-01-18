@@ -48,7 +48,9 @@ function insertData(
  * }
  */
 
-// TODO: We're getting double "contents" in the structure.
+// TODO: still having trouble getting the structure to work
+// The problem is happening with early items in the structure
+// and with placeholder items.
 
 function buildStructure(grid: any[]): any {
   let data_structure: any = { "name": "", "data": {}, "contents": {} };
@@ -71,8 +73,11 @@ function buildStructure(grid: any[]): any {
 
     if (last_depth > grid[i].depth) {
       // If we're going back up the tree, remove the last item
-      // from the path
-      path.pop();
+      // and "contents" from the path for each step back
+      for(let j = 0; j < last_depth - grid[i].depth; j++){
+        path.pop();
+        path.pop();  
+      }
     }
 
     // If there's a key-value pair, add it to the data
