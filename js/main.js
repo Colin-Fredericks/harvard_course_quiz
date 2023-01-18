@@ -11,34 +11,113 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 /**
+ * @description: Inserts data into a nested structure.
+ */
+function insertData(data_structure, path, key, value) {
+    console.debug('inserting ' + key + ': ' + value + ' into ' + path);
+    let current = data_structure;
+    for (let i = 0; i < path.length; i++) {
+        current = current[path[i]];
+    }
+    current[key] = value;
+}
+/**
  * @description: Builds the nested structure of the data.
  * @param {Array} The array of lines of data, with depth and text.
  * @returns {Object} The nested structure of the data.
  */
-function buildStructure(grid, current_depth = 0) {
-    let data_structure = {};
-    let current_line = grid.shift();
-    // TODO: something is wrong here. I'm iterating through the
-    // lines, but I think I'm overwriting the data_structure.
-    while (current_line.depth >= current_depth) {
-        let key = current_line.text.split(':');
-        console.log(key);
-        if (key.length === 1) {
-            data_structure["contents"] = {
-                [key[0].trim()]: buildStructure(grid, current_depth + 1)
-            };
+/****************************
+ * Here's what the structure should look like:
+ * data_structure = {
+ *  "name": "ITEM_NAME",
+ *  "data": {
+ *   "title": "TITLE",
+ *   "question": "QUESTION",
+ *   "image": "IMAGE.png",
+ *  },
+ *  "contents": {
+ *   "SUBITEM_NAME":{
+ *    "name": "SUBITEM_NAME",
+ *    "data": { the_data },
+ *    "contents": [ more nested stuff ]
+ *   },
+ *   "SUBITEM_NAME": { another item },
+ *   "SUBITEM_NAME": { another item }, etc
+ *  }
+ * }
+ */
+function buildStructure(grid) {
+    let data_structure = { "name": "", "data": {}, "contents": {} };
+    let path = [];
+    let last_depth = 0;
+    for (let i = 0; i < grid.length; i++) {
+        // Get the key and value
+        let [key, value] = grid[i]
+            .text
+            .split(':')
+            .map((item) => item.trim());
+        console.debug('line = ' + key + ': ' + value);
+        if (i === 0) {
+            data_structure.name = key;
+            continue;
+        }
+        if (last_depth > grid[i].depth) {
+            // If we're going back up the tree, remove the last item
+            // from the path
+            path.pop();
+        }
+        // If there's a key-value pair, add it to the data
+        if (typeof value !== "undefined") {
+            path.push('data');
+            insertData(data_structure, path, key, value);
+            path.pop();
         }
         else {
-            data_structure[key[0].trim()] = key[1].trim();
+            // If there's no key-value pair, it's a new item
+            // Add the item to the contents
+            path.push('contents');
+            insertData(data_structure, path, key, {
+                "name": key,
+                "data": {},
+                "contents": {}
+            });
+            // Add the item to the path
+            path.push(key);
         }
-        current_line = grid.shift();
-        // Stop if we've reached the end of the file
-        if (typeof current_line === 'undefined') {
-            break;
-        }
+        console.debug(data_structure);
+        last_depth = grid[i].depth;
     }
     return data_structure;
 }
+/* Older version of buildStructure
+function buildStructure(grid: any[], current_depth = 0): any {
+  let data_structure: any = {};
+  let current_line = grid.shift();
+
+  // TODO: something is wrong here. I'm iterating through the
+  // lines, but I think I'm overwriting the data_structure.
+
+  while (current_line.depth >= current_depth) {
+    let key = current_line.text.split(':');
+    console.log(key);
+
+    if (key.length === 1) {
+      data_structure["contents"] = {
+        [key[0].trim()]: buildStructure(grid, current_depth + 1)
+      };
+    } else {
+      data_structure[key[0].trim()] = key[1].trim();
+    }
+    current_line = grid.shift();
+
+    // Stop if we've reached the end of the file
+    if (typeof current_line === 'undefined') {
+      break;
+    }
+  }
+  return data_structure;
+}
+*/
 /**
  * @description Processes the data from a file into a nested structure.
  * @param data The data to process, in text form.
@@ -161,3 +240,4 @@ let option_box = document.getElementById('options');
 // Need to figure out how to tell it where we are.
 setupLinkListeners();
 // No need to set breadcrumb listeners on the first page
+//# sourceMappingURL=main.js.map
