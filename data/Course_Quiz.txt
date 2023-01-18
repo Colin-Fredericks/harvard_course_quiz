@@ -1,116 +1,116 @@
-Title: What Harvard course is right for me?
-Text: I am interested in…
-Image: start.png
-Alt: Starting point
-Professional Development
-	Blurb: (placeholder)
-	Title: Professional Development
-	Text: I work in the field of…
-	Image: whatevs.png
-	Alt: image alt text
-	Health
-		Blurb: placeholder text
-		Title: Health and Medicine
-		Text: I prefer to learn…
-		Image: medpack.jpg
-		Alt: some kind of medical image
-		In a structure with assigned deadlines
-			Blurb: (placeholder)
-			Title: Structured
-			Text: I’d like to explore…
-			Image: whatevs.png
-			Alt: image alt text
-			How to identify the primary drivers of rising health care costs
-				Blurb: (placeholder)
-				Title: Costs
-				Text: HCEC
-				Image: whatevs.png
-				Alt: image alt text
-			How to better understand and utilize technology and its applications for health care
-				Blurb: (placeholder)
-				Title: Technology
-				Text: DTHC
-				Image: whatevs.png
-				Alt: image alt text
-			How to build a solid business strategy for my health care organization
-				Blurb: (placeholder)
-				Title: Strategy
-				Text: HCST
-				Image: whatevs.png
-				Alt: image alt text
-			How to make the health care industry more equitable
-				Blurb: (placeholder)
-				Title: Structured
-				Text: RDHC
-				Image: whatevs.png
-				Alt: image alt text
-
-		Independently and at my own pace
-			Blurb: (placeholder)
-			Title: Independent
-			Text: I’d like to explore…
-			Image: whatevs.png
-			Alt: image alt text
-			How to be a better leader for my team
-				Blurb: 
-				Title: Leadership
-				Text: You’re ready for [Exercising Leadership]( https://www.edx.org/course/exercising-leadership-foundational-principles)
-				Image: leadership.png
-				Alt: image alt text
-			A refresher on the human anatomy
-				Blurb: 
-				Title: Anatomy
-				Text: You should take [AnatomyX]( https://www.edx.org/course/anatomyx-musculoskeletal-cases), with detailed diagrams and videos.
-				Image: anatomy.png
-				Alt: Hey look it’s someone’s innards!
-			How the law impacts medical practice and genetics
-				Blurb: 
-				Title: 
-				Text: You should explore [Bioethics]( https://www.edx.org/course/bioethics-the-law-medicine-and-ethics-of-reproduct), where we dive into medicine, reproduction, and other issues.
-				Image: bio.png
-				Alt: image alt text
-			Policies around the cost and regulation of prescription drugs
-				Blurb: 
-				Title: Policy
-				Text: Come learn about [Prescription Drug Regulation, Cost, and Access](https://www.edx.org/course/prescription-drug-regulation-cost-and-access-curre)
-				Image: leadership.png
-				Alt: image alt text
-			How to make the health care industry more equitable
-				Blurb: 
-				Title: Equity
-				Text: Whatever RDHC stands for
-				Image: leadership.png
-				Alt: image alt text
-
-	Business and Entrepreneurship
-	Education
-	Computer Science
-	Government or the Public Sector
-	Other
-Personal Development
-	Blurb: (placeholder)
-	Title: Personal Development
-	Text: I’d like to learn how to…
-	Image: whatevs.png
-	Alt: image alt text
-	Have a better argument
+ÔªøWhat Harvard course is right for me?
+	Text: I am interested in‚Ä¶
+	Image: start.png
+	Alt: Starting point
+	Professional Development
 		Blurb: (placeholder)
-		Title: Argument
-		Text: If you’d like to study great speeches and understand persuasion, choose [Rhetoric](https://www.edx.org/course/rhetoric-art-of-persuasive-writing-public-speaking). If you’d rather engage one-on-one, you might want (Argument 101)[] or [Logic and Reclaiming Argument]().
+		Title: Professional Development
+		Text: I work in the field of‚Ä¶
 		Image: whatevs.png
 		Alt: image alt text
-	Make the world a more just place
-	Feel happier and manage stress
-	Understand and dissect some of the world's great pieces of creative work
-	Better connect with religious texts and spirituality
+		Health
+			Blurb: placeholder text
+			Title: Health and Medicine
+			Text: I prefer to learn‚Ä¶
+			Image: medpack.jpg
+			Alt: some kind of medical image
+			In a structure with assigned deadlines
+				Blurb: (placeholder)
+				Title: Structured
+				Text: I‚Äôd like to explore‚Ä¶
+				Image: whatevs.png
+				Alt: image alt text
+				How to identify the primary drivers of rising health care costs
+					Blurb: (placeholder)
+					Title: Costs
+					Text: HCEC
+					Image: whatevs.png
+					Alt: image alt text
+				How to better understand and utilize technology and its applications for health care
+					Blurb: (placeholder)
+					Title: Technology
+					Text: DTHC
+					Image: whatevs.png
+					Alt: image alt text
+				How to build a solid business strategy for my health care organization
+					Blurb: (placeholder)
+					Title: Strategy
+					Text: HCST
+					Image: whatevs.png
+					Alt: image alt text
+				How to make the health care industry more equitable
+					Blurb: (placeholder)
+					Title: Structured
+					Text: RDHC
+					Image: whatevs.png
+					Alt: image alt text
+
+			Independently and at my own pace
+				Blurb: (placeholder)
+				Title: Independent
+				Text: I‚Äôd like to explore‚Ä¶
+				Image: whatevs.png
+				Alt: image alt text
+				How to be a better leader for my team
+					Blurb: 
+					Title: Leadership
+					Text: You‚Äôre ready for [Exercising Leadership]( https://www.edx.org/course/exercising-leadership-foundational-principles)
+					Image: leadership.png
+					Alt: image alt text
+				A refresher on the human anatomy
+					Blurb: 
+					Title: Anatomy
+					Text: You should take [AnatomyX]( https://www.edx.org/course/anatomyx-musculoskeletal-cases), with detailed diagrams and videos.
+					Image: anatomy.png
+					Alt: Hey look it‚Äôs someone‚Äôs innards!
+				How the law impacts medical practice and genetics
+					Blurb: 
+					Title: 
+					Text: You should explore [Bioethics]( https://www.edx.org/course/bioethics-the-law-medicine-and-ethics-of-reproduct), where we dive into medicine, reproduction, and other issues.
+					Image: bio.png
+					Alt: image alt text
+				Policies around the cost and regulation of prescription drugs
+					Blurb: 
+					Title: Policy
+					Text: Come learn about [Prescription Drug Regulation, Cost, and Access](https://www.edx.org/course/prescription-drug-regulation-cost-and-access-curre)
+					Image: leadership.png
+					Alt: image alt text
+				How to make the health care industry more equitable
+					Blurb: 
+					Title: Equity
+					Text: Whatever RDHC stands for
+					Image: leadership.png
+					Alt: image alt text
+
+		Business and Entrepreneurship
+		Education
+		Computer Science
+		Government or the Public Sector
+		Other
+	Personal Development
+		Blurb: (placeholder)
+		Title: Personal Development
+		Text: I‚Äôd like to learn how to‚Ä¶
+		Image: whatevs.png
+		Alt: image alt text
+		Have a better argument
+			Blurb: (placeholder)
+			Title: Argument
+			Text: If you‚Äôd like to study great speeches and understand persuasion, choose [Rhetoric](https://www.edx.org/course/rhetoric-art-of-persuasive-writing-public-speaking). If you‚Äôd rather engage one-on-one, you might want (Argument 101)[] or [Logic and Reclaiming Argument]().
+			Image: whatevs.png
+			Alt: image alt text
+		Make the world a more just place
+		Feel happier and manage stress
+		Understand and dissect some of the world's great pieces of creative work
+		Better connect with religious texts and spirituality
 
 
-Learning something fun and new!
-	Cooking
-		Title: Cooking
-	History
-		Title: History
-	Mysteries
-		Title: Mysteries
-	Music, Art, and Literature
-		Title: Music, Art, and Literature
+	Learning something fun and new!
+		Cooking
+			Title: Cooking
+		History
+			Title: History
+		Mysteries
+			Title: Mysteries
+		Music, Art, and Literature
+			Title: Music, Art, and Literature
