@@ -83,10 +83,15 @@
 					Alt: image alt text
 
 		Business and Entrepreneurship
+			Title: Business
 		Education
+			Title: Education
 		Computer Science
+			Title: Computer Science
 		Government or the Public Sector
+			Title: Public Sector
 		Other
+			Title: Other Fields
 	Personal Development
 		Blurb: (placeholder)
 		Title: Personal Development
@@ -100,9 +105,13 @@
 			Image: whatevs.png
 			Alt: image alt text
 		Make the world a more just place
+			Title: Justice
 		Feel happier and manage stress
+			Title: Happiness
 		Understand and dissect some of the world's great pieces of creative work
+			Title: Art
 		Better connect with religious texts and spirituality
+			Title: Religion
 
 
 	Learning something fun and new!

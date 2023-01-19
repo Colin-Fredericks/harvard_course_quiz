@@ -12,6 +12,10 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 /**
  * @description: Inserts data into a nested structure.
+ * @param {Object} data_structure The nested structure to insert into.
+ * @param {Array} path The path to the item to insert into.
+ * @param {string} key The key to insert.
+ * @param {any} value The value to insert. Can be an object.
  */
 function insertData(data_structure, path, key, value) {
     console.debug('inserting ' + key + ': ' + value + ' into ' + path);
@@ -21,11 +25,6 @@ function insertData(data_structure, path, key, value) {
     }
     current[key] = value;
 }
-/**
- * @description: Builds the nested structure of the data.
- * @param {Array} The array of lines of data, with depth and text.
- * @returns {Object} The nested structure of the data.
- */
 /****************************
  * Here's what the structure should look like:
  * data_structure = {
@@ -34,6 +33,7 @@ function insertData(data_structure, path, key, value) {
  *   "title": "TITLE",
  *   "question": "QUESTION",
  *   "image": "IMAGE.png",
+ *   etc.
  *  },
  *  "contents": {
  *   "SUBITEM_NAME":{
@@ -46,7 +46,13 @@ function insertData(data_structure, path, key, value) {
  *  }
  * }
  */
-// TODO: 
+// TODO: Make this handle multiple items at the same level
+// (Authors should be able to do that as a placeholder.)
+/**
+ * @description: Builds the nested structure of the data.
+ * @param {Array} grid Array of lines of data, with depth and text.
+ * @returns {Object} The nested structure of the data.
+ */
 function buildStructure(grid) {
     let data_structure = { "name": "", "data": {}, "contents": {} };
     let path = [];
