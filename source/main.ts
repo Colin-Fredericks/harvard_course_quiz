@@ -9,17 +9,28 @@ getGoing();
 
 async function getGoing() {
   let path = [];
-  let data = await readData('Course_Quiz.txt');
-  let body = document.querySelector('body');
 
-  // This is just to test that the script is loading. Take out later.
-  body.insertBefore(document.createElement('hr'), body.firstChild);
+  fetch('data/Course_Quiz.txt')
+    .then((response) => response.text())
+    .catch((error) => {
+      console.debug(error);
+      return 'no data';
+    })
+    .then((data) => processData(data))
+    .then((data_structure) => {
+      // console.debug(data_structure);
 
-  body.insertBefore(constructHTML(data), body.firstChild);
-  body.insertBefore(makeBreadcrumbs(data, path), body.firstChild);
+      let body = document.querySelector('body');
 
-  setupLinkListeners();
-  // No need to set breadcrumb listeners on the first page
+      // This is just to test that the script is loading. Take out later.
+      body.insertBefore(document.createElement('hr'), body.firstChild);
+
+      body.insertBefore(constructHTML(data_structure, path), body.firstChild);
+      body.insertBefore(makeBreadcrumbs(data_structure, path), body.firstChild);
+
+      setupLinkListeners(path);
+      // No need to set breadcrumb listeners on the first page
+    });
 }
 
 /**
@@ -31,18 +42,14 @@ async function readData(filename: string): Promise<string> {
   // Read in the file
   fetch('data/' + filename)
     .then((response) => response.text())
-    .then(async function (data) {
-      // console.log(data);
-      let data_structure = await processData(data);
-      console.log(data_structure);
-      // Parse the data into an object
+    .then(function (data) {
+      console.log(data);
       return data;
     })
     .catch((error) => {
       console.log(error);
       return 'no data';
     });
-  return 'no data';
 }
 
 /**
@@ -51,7 +58,6 @@ async function readData(filename: string): Promise<string> {
  * @returns A nested structure of objects containing the data.
  */
 async function processData(data: string): Promise<any> {
-  let data_structure: any = {};
   let lines = data.split('\n');
   // Get the depth of each line
   let grid = lines.map(function (line) {
@@ -108,11 +114,8 @@ function buildStructure(grid: any[]): any {
       .split(':')
       .map((item: string) => item.trim());
 
-    key = key.toLowerCase();
-    // console.debug('line = ' + key + ': ' + value);
-
     if (i === 0) {
-      data_structure.name = key;
+      data_structure.data.name = key;
       continue;
     }
 
@@ -128,7 +131,7 @@ function buildStructure(grid: any[]): any {
     // If there's a key-value pair, add it to the data
     if (typeof value !== 'undefined') {
       path.push('data');
-      insertData(data_structure, path, key, value);
+      insertData(data_structure, path, key.toLowerCase(), value);
       path.pop();
     } else {
       // If there's no key-value pair, it's a new item
@@ -175,9 +178,9 @@ function slideTransition(
  * @param {Object} data A slice of the total data object.
  * @returns {HTMLElement} The HTML element containing the title, question, and cards.
  */
-function constructHTML(data: any): HTMLElement {
+function constructHTML(data: any, path: string[]): HTMLElement {
   console.debug('constructHTML');
-  console.debug(data);
+  console.debug(data.data);
 
   // Make the <main> tag.
   let main = document.createElement('main');
@@ -189,14 +192,14 @@ function constructHTML(data: any): HTMLElement {
   header.id = 'header';
   header.classList.add('row', 's12');
   let header_text = document.createElement('h3');
-  header_text.innerText = data.data.title;
+  header_text.innerText = data.data.name;
   header.appendChild(header_text);
 
   let question = document.createElement('div');
   question.id = 'question';
   question.classList.add('row', 's12', 'center-align');
   let question_text = document.createElement('h3');
-  question_text.innerText = data.text;
+  question_text.innerText = data.data.text;
   question.appendChild(question_text);
 
   let options = document.createElement('div');
@@ -263,7 +266,7 @@ function createCard(data: any, num_cards: number): HTMLElement {
  * @param {Array} breadcrumbs The array of breadcrumbs (strings).
  * @returns {HTMLElement} The HTML element containing the breadcrumbs.
  */
-function makeBreadcrumbs(data: object, path: string[]): HTMLElement {
+function makeBreadcrumbs(data: any, path: string[]): HTMLElement {
   console.debug('makeBreadcrumbs');
   // Create the breadcrumb container
   // Create the breadcrumb elements
@@ -282,7 +285,7 @@ function makeBreadcrumbs(data: object, path: string[]): HTMLElement {
  * @description: Set up the link listeners.
  * @returns {void}
  */
-function setupLinkListeners(): void {
+function setupLinkListeners(path: string[]): void {
   // When someone clicks a link...
   document.querySelectorAll('main a').forEach((link) => {
     link.addEventListener('click', (event) => {

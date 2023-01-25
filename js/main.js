@@ -16,14 +16,23 @@ getGoing();
 function getGoing() {
     return __awaiter(this, void 0, void 0, function* () {
         let path = [];
-        let data = yield readData('Course_Quiz.txt');
-        let body = document.querySelector('body');
-        // This is just to test that the script is loading. Take out later.
-        body.insertBefore(document.createElement('hr'), body.firstChild);
-        body.insertBefore(constructHTML(data), body.firstChild);
-        body.insertBefore(makeBreadcrumbs(data, path), body.firstChild);
-        setupLinkListeners();
-        // No need to set breadcrumb listeners on the first page
+        fetch('data/Course_Quiz.txt')
+            .then((response) => response.text())
+            .catch((error) => {
+            console.debug(error);
+            return 'no data';
+        })
+            .then((data) => processData(data))
+            .then((data_structure) => {
+            // console.debug(data_structure);
+            let body = document.querySelector('body');
+            // This is just to test that the script is loading. Take out later.
+            body.insertBefore(document.createElement('hr'), body.firstChild);
+            body.insertBefore(constructHTML(data_structure, path), body.firstChild);
+            body.insertBefore(makeBreadcrumbs(data_structure, path), body.firstChild);
+            setupLinkListeners(path);
+            // No need to set breadcrumb listeners on the first page
+        });
     });
 }
 /**
@@ -37,19 +46,13 @@ function readData(filename) {
         fetch('data/' + filename)
             .then((response) => response.text())
             .then(function (data) {
-            return __awaiter(this, void 0, void 0, function* () {
-                // console.log(data);
-                let data_structure = yield processData(data);
-                console.log(data_structure);
-                // Parse the data into an object
-                return data;
-            });
+            console.log(data);
+            return data;
         })
             .catch((error) => {
             console.log(error);
             return 'no data';
         });
-        return 'no data';
     });
 }
 /**
@@ -59,7 +62,6 @@ function readData(filename) {
  */
 function processData(data) {
     return __awaiter(this, void 0, void 0, function* () {
-        let data_structure = {};
         let lines = data.split('\n');
         // Get the depth of each line
         let grid = lines.map(function (line) {
@@ -112,10 +114,8 @@ function buildStructure(grid) {
         let [key, value] = grid[i].text
             .split(':')
             .map((item) => item.trim());
-        key = key.toLowerCase();
-        // console.debug('line = ' + key + ': ' + value);
         if (i === 0) {
-            data_structure.name = key;
+            data_structure.data.name = key;
             continue;
         }
         if (last_depth > grid[i].depth) {
@@ -129,7 +129,7 @@ function buildStructure(grid) {
         // If there's a key-value pair, add it to the data
         if (typeof value !== 'undefined') {
             path.push('data');
-            insertData(data_structure, path, key, value);
+            insertData(data_structure, path, key.toLowerCase(), value);
             path.pop();
         }
         else {
@@ -170,9 +170,9 @@ function slideTransition(element, direction, in_out) {
  * @param {Object} data A slice of the total data object.
  * @returns {HTMLElement} The HTML element containing the title, question, and cards.
  */
-function constructHTML(data) {
+function constructHTML(data, path) {
     console.debug('constructHTML');
-    console.debug(data);
+    console.debug(data.data);
     // Make the <main> tag.
     let main = document.createElement('main');
     let divider1 = document.createElement('div');
@@ -181,13 +181,13 @@ function constructHTML(data) {
     header.id = 'header';
     header.classList.add('row', 's12');
     let header_text = document.createElement('h3');
-    header_text.innerText = data.data.title;
+    header_text.innerText = data.data.name;
     header.appendChild(header_text);
     let question = document.createElement('div');
     question.id = 'question';
     question.classList.add('row', 's12', 'center-align');
     let question_text = document.createElement('h3');
-    question_text.innerText = data.text;
+    question_text.innerText = data.data.text;
     question.appendChild(question_text);
     let options = document.createElement('div');
     options.id = 'options';
@@ -257,7 +257,7 @@ function makeBreadcrumbs(data, path) {
  * @description: Set up the link listeners.
  * @returns {void}
  */
-function setupLinkListeners() {
+function setupLinkListeners(path) {
     // When someone clicks a link...
     document.querySelectorAll('main a').forEach((link) => {
         link.addEventListener('click', (event) => {
