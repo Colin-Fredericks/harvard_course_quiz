@@ -115,6 +115,7 @@
 
 
 	Learning something fun and new!
+		Title: Learning something fun and new!
 		Text: I am interested in…
 		Cooking
 			Title: Cooking

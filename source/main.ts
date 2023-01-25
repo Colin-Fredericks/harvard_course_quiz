@@ -28,7 +28,7 @@ async function getGoing() {
       body.insertBefore(constructHTML(data_structure, path), body.firstChild);
       body.insertBefore(makeBreadcrumbs(data_structure, path), body.firstChild);
 
-      setupLinkListeners(path);
+      setupLinkListeners(data_structure, path);
       // No need to set breadcrumb listeners on the first page
     });
 }
@@ -119,7 +119,7 @@ function buildStructure(grid: any[]): any {
       // Add the item to the contents
       path.push('contents');
       insertData(data_structure, path, key, {
-        data: {},
+        data: {path: key},
         contents: {},
       });
       // Add the item to the path
@@ -162,6 +162,7 @@ function constructHTML(data: any, path: string[]): HTMLElement {
   question.appendChild(question_text);
 
   let options = document.createElement('div');
+  options.classList.add('row', 's12', 'center-align');
   options.id = 'options';
   question.classList.add('row', 's12', 'center-align');
 
@@ -200,6 +201,7 @@ function createCard(data: any, num_cards: number): HTMLElement {
   card.classList.add('col', 'm' + width); // Need to adjust m2/3/4/6 for number of cards
   let link = document.createElement('a');
   link.href = '#!';
+  link.dataset.path = data.data.path;
   let card_div = document.createElement('div');
   card_div.classList.add('card', 'blue-grey', 'darken-1', 'hoverable');
   let card_content = document.createElement('div');
@@ -210,7 +212,7 @@ function createCard(data: any, num_cards: number): HTMLElement {
   card_text.classList.add('flow-text', 'card-text');
 
   card_title.innerText = data.data.title;
-  if(typeof data.data.blurb === 'undefined') {
+  if (typeof data.data.blurb === 'undefined') {
     card_text.innerText = '';
   } else {
     card_text.innerText = data.data.blurb;
@@ -271,17 +273,24 @@ function makeBreadcrumbs(data: any, path: string[]): HTMLElement {
  * @description: Set up the link listeners.
  * @returns {void}
  */
-function setupLinkListeners(path: string[]): void {
+function setupLinkListeners(data: any, path: string[]): void {
   // When someone clicks a link...
   document.querySelectorAll('main a').forEach((link) => {
     link.addEventListener('click', (event) => {
       event.preventDefault();
+      // Add the new path to the path array
+      // TODO: Need to include the "contents" containers here too.
+      path.push(link.getAttribute('data-path'));      
+      // Get the html for where we're going
+      let html = constructHTML(getData(data, path), path);
+      // Slide the current page to the left and remove it  
       slideTransition(document.querySelector('main'), 'left', 'out');
+      // Slide the new page in from the right
+      slideTransition(html, 'right', 'in');
+      // Reset the listeners
+      setupLinkListeners(data, path);
     });
   });
-  // Get the html for where we're going
-  // Slide the current page to the left and remove it
-  // Reset the listeners
 }
 
 /**
@@ -318,4 +327,18 @@ function insertData(
     current = current[path[i]];
   }
   current[key] = value;
+}
+
+/**
+ * @description: Gets the data at a given path.
+ * @param {Object} data The nested data structure to search.
+ * @param {Array} path The path to the item to get.
+ * @returns {any} The data at the given path.
+ */
+function getData(data: any, path: Array<string>): any {
+  let current = data;
+  for (let i = 0; i < path.length; i++) {
+    current = current[path[i]];
+  }
+  return current;
 }
