@@ -34,25 +34,6 @@ async function getGoing() {
 }
 
 /**
- * @description Reads in data from the data file with custom format.
- * @param {string} filename The name of the file to read.
- * @returns {Object} The data object.
- */
-async function readData(filename: string): Promise<string> {
-  // Read in the file
-  fetch('data/' + filename)
-    .then((response) => response.text())
-    .then(function (data) {
-      console.log(data);
-      return data;
-    })
-    .catch((error) => {
-      console.log(error);
-      return 'no data';
-    });
-}
-
-/**
  * @description Processes the data from a file into a nested structure.
  * @param data The data to process, in text form.
  * @returns A nested structure of objects containing the data.
@@ -95,7 +76,7 @@ async function processData(data: string): Promise<any> {
  * }
  */
 
-// TODO: Make this handle multiple items at the same level
+// TODO: Make this handle multiple blank items at the same level
 // (Authors should be able to do that as a placeholder.)
 
 /**
@@ -104,7 +85,7 @@ async function processData(data: string): Promise<any> {
  * @returns {Object} The nested structure of the data.
  */
 function buildStructure(grid: any[]): any {
-  let data_structure: any = { name: '', data: {}, contents: {} };
+  let data_structure: any = { data: {}, contents: {} };
   let path: Array<string> = [];
   let last_depth = 0;
 
@@ -138,7 +119,6 @@ function buildStructure(grid: any[]): any {
       // Add the item to the contents
       path.push('contents');
       insertData(data_structure, path, key, {
-        name: key,
         data: {},
         contents: {},
       });
@@ -153,34 +133,13 @@ function buildStructure(grid: any[]): any {
 }
 
 /**
- * @description Slides an element to the left while fading it out.
- * @param {HTMLElement} element The element to slide.
- * @param {string} direction The direction to slide.
- * @param {string} in_out Whether to fade in or out.
- * @returns {void}
- */
-function slideTransition(
-  element: HTMLElement,
-  direction: string,
-  in_out: string
-): void {
-  element.classList.add('slide-' + direction);
-  element.classList.add('fade-' + in_out);
-  // When the animation is done, remove the element
-  element.addEventListener('animationend', () => {
-    element.remove();
-  });
-  // TODO: handle focus
-}
-
-/**
  * @description: Constructs the HTML for the data.
  * @param {Object} data A slice of the total data object.
  * @returns {HTMLElement} The HTML element containing the title, question, and cards.
  */
 function constructHTML(data: any, path: string[]): HTMLElement {
   console.debug('constructHTML');
-  console.debug(data.data);
+  console.debug(data);
 
   // Make the <main> tag.
   let main = document.createElement('main');
@@ -234,6 +193,7 @@ function constructHTML(data: any, path: string[]): HTMLElement {
  */
 function createCard(data: any, num_cards: number): HTMLElement {
   console.debug('createCard');
+  console.debug(data);
   let width = String(Math.round(12 / num_cards));
 
   let card = document.createElement('div');
@@ -249,8 +209,12 @@ function createCard(data: any, num_cards: number): HTMLElement {
   let card_text = document.createElement('p');
   card_text.classList.add('flow-text', 'card-text');
 
-  card_title.innerText = data.title;
-  card_text.innerText = data.text;
+  card_title.innerText = data.data.title;
+  if(typeof data.data.blurb === 'undefined') {
+    card_text.innerText = '';
+  } else {
+    card_text.innerText = data.data.blurb;
+  }
 
   card_content.appendChild(card_title);
   card_content.appendChild(card_text);
@@ -259,6 +223,28 @@ function createCard(data: any, num_cards: number): HTMLElement {
   card.appendChild(link);
 
   return card;
+}
+
+
+/**
+ * @description Slides an element to the left while fading it out.
+ * @param {HTMLElement} element The element to slide.
+ * @param {string} direction The direction to slide.
+ * @param {string} in_out Whether to fade in or out.
+ * @returns {void}
+ */
+function slideTransition(
+  element: HTMLElement,
+  direction: string,
+  in_out: string
+): void {
+  element.classList.add('slide-' + direction);
+  element.classList.add('fade-' + in_out);
+  // When the animation is done, remove the element
+  element.addEventListener('animationend', () => {
+    element.remove();
+  });
+  // TODO: handle focus
 }
 
 /**

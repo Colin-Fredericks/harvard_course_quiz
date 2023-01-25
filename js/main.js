@@ -36,26 +36,6 @@ function getGoing() {
     });
 }
 /**
- * @description Reads in data from the data file with custom format.
- * @param {string} filename The name of the file to read.
- * @returns {Object} The data object.
- */
-function readData(filename) {
-    return __awaiter(this, void 0, void 0, function* () {
-        // Read in the file
-        fetch('data/' + filename)
-            .then((response) => response.text())
-            .then(function (data) {
-            console.log(data);
-            return data;
-        })
-            .catch((error) => {
-            console.log(error);
-            return 'no data';
-        });
-    });
-}
-/**
  * @description Processes the data from a file into a nested structure.
  * @param data The data to process, in text form.
  * @returns A nested structure of objects containing the data.
@@ -98,7 +78,7 @@ function processData(data) {
  *  }
  * }
  */
-// TODO: Make this handle multiple items at the same level
+// TODO: Make this handle multiple blank items at the same level
 // (Authors should be able to do that as a placeholder.)
 /**
  * @description: Builds the nested structure of the data.
@@ -106,7 +86,7 @@ function processData(data) {
  * @returns {Object} The nested structure of the data.
  */
 function buildStructure(grid) {
-    let data_structure = { name: '', data: {}, contents: {} };
+    let data_structure = { data: {}, contents: {} };
     let path = [];
     let last_depth = 0;
     for (let i = 0; i < grid.length; i++) {
@@ -137,7 +117,6 @@ function buildStructure(grid) {
             // Add the item to the contents
             path.push('contents');
             insertData(data_structure, path, key, {
-                name: key,
                 data: {},
                 contents: {},
             });
@@ -150,29 +129,13 @@ function buildStructure(grid) {
     return data_structure;
 }
 /**
- * @description Slides an element to the left while fading it out.
- * @param {HTMLElement} element The element to slide.
- * @param {string} direction The direction to slide.
- * @param {string} in_out Whether to fade in or out.
- * @returns {void}
- */
-function slideTransition(element, direction, in_out) {
-    element.classList.add('slide-' + direction);
-    element.classList.add('fade-' + in_out);
-    // When the animation is done, remove the element
-    element.addEventListener('animationend', () => {
-        element.remove();
-    });
-    // TODO: handle focus
-}
-/**
  * @description: Constructs the HTML for the data.
  * @param {Object} data A slice of the total data object.
  * @returns {HTMLElement} The HTML element containing the title, question, and cards.
  */
 function constructHTML(data, path) {
     console.debug('constructHTML');
-    console.debug(data.data);
+    console.debug(data);
     // Make the <main> tag.
     let main = document.createElement('main');
     let divider1 = document.createElement('div');
@@ -213,6 +176,7 @@ function constructHTML(data, path) {
  */
 function createCard(data, num_cards) {
     console.debug('createCard');
+    console.debug(data);
     let width = String(Math.round(12 / num_cards));
     let card = document.createElement('div');
     card.classList.add('col', 'm' + width); // Need to adjust m2/3/4/6 for number of cards
@@ -226,14 +190,35 @@ function createCard(data, num_cards) {
     card_title.classList.add('flow-text');
     let card_text = document.createElement('p');
     card_text.classList.add('flow-text', 'card-text');
-    card_title.innerText = data.title;
-    card_text.innerText = data.text;
+    card_title.innerText = data.data.title;
+    if (typeof data.data.blurb === 'undefined') {
+        card_text.innerText = '';
+    }
+    else {
+        card_text.innerText = data.data.blurb;
+    }
     card_content.appendChild(card_title);
     card_content.appendChild(card_text);
     card_div.appendChild(card_content);
     link.appendChild(card_div);
     card.appendChild(link);
     return card;
+}
+/**
+ * @description Slides an element to the left while fading it out.
+ * @param {HTMLElement} element The element to slide.
+ * @param {string} direction The direction to slide.
+ * @param {string} in_out Whether to fade in or out.
+ * @returns {void}
+ */
+function slideTransition(element, direction, in_out) {
+    element.classList.add('slide-' + direction);
+    element.classList.add('fade-' + in_out);
+    // When the animation is done, remove the element
+    element.addEventListener('animationend', () => {
+        element.remove();
+    });
+    // TODO: handle focus
 }
 /**
  * @description: Makes HTML breadcrumbs for our current location.
