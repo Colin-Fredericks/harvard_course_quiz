@@ -22,33 +22,43 @@
 
 .slide-left.fade-out{
   position: relative;
-  animation: slide-left 1000ms, fade-out 800ms;
+  animation: slide-to-left 1000ms, fade-out 800ms forwards;
 }
 
 .slide-right.fade-out{
   position: relative;
-  animation: slide-right 1000ms, fade-out 800ms;
+  animation: slide-to-right 1000ms, fade-out 800ms forwards;
 }
 
 .slide-left.fade-in{
   position: relative;
-  animation: slide-left 1000ms, fade-in 800ms;
+  animation: slide-from-left 1000ms, fade-in 800ms forwards;
 }
 
 .slide-right.fade-in{
   position: relative;
-  animation: slide-right 1000ms, fade-in 800ms;
+  animation: slide-from-right 1000ms, fade-in 800ms forwards;
 }
 
 
-@keyframes slide-left {
+@keyframes slide-to-left {
   from {left: 0px;}
   to {left: -600px;}
 }
 
-@keyframes slide-right {
+@keyframes slide-to-right {
   from {left: 0px;}
   to {left: 600px;}
+}
+
+@keyframes slide-from-left {
+  from {left: 600px;}
+  to {left: 0px;}
+}
+
+@keyframes slide-from-right {
+  from {left: 600px;}
+  to {left: 0px;}
 }
 
 @keyframes fade-in {

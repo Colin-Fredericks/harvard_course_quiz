@@ -21,12 +21,16 @@ async function getGoing() {
       // console.debug(data_structure);
 
       let body = document.querySelector('body');
+      let main = document.querySelector('main');
+      let nav = document.querySelector('nav');
 
       // This is just to test that the script is loading. Take out later.
       body.insertBefore(document.createElement('hr'), body.firstChild);
 
-      body.insertBefore(constructHTML(data_structure, path), body.firstChild);
-      body.insertBefore(makeBreadcrumbs(data_structure, path), body.firstChild);
+      main.insertBefore(constructHTML(data_structure, path), main.firstChild);
+      nav.insertBefore(makeBreadcrumbs(data_structure, path), nav.firstChild);
+      // Make the options visible.
+      document.getElementById('bigbox').style.opacity = '1';
 
       setupLinkListeners(data_structure, path);
       // No need to set breadcrumb listeners on the first page
@@ -119,7 +123,7 @@ function buildStructure(grid: any[]): any {
       // Add the item to the contents
       path.push('contents');
       insertData(data_structure, path, key, {
-        data: {path: key},
+        data: { path: key },
         contents: {},
       });
       // Add the item to the path
@@ -133,7 +137,8 @@ function buildStructure(grid: any[]): any {
 }
 
 /**
- * @description: Constructs the HTML for the data.
+ * @description: Constructs the HTML for the data. Note that this is hidden by default.
+ * You will need to un-hide it when you're ready to display it.
  * @param {Object} data A slice of the total data object.
  * @returns {HTMLElement} The HTML element containing the title, question, and cards.
  */
@@ -141,8 +146,12 @@ function constructHTML(data: any, path: string[]): HTMLElement {
   console.debug('constructHTML');
   console.debug(data);
 
-  // Make the <main> tag.
-  let main = document.createElement('main');
+  // Make the container tag.
+  let main_div = document.createElement('div');
+  main_div.classList.add('container');
+  main_div.id = 'bigbox';
+  // Set the opacity to 0 so it's hidden by default.
+  main_div.style.opacity = '0';
 
   let divider1 = document.createElement('div');
   divider1.classList.add('divider');
@@ -178,13 +187,13 @@ function constructHTML(data: any, path: string[]): HTMLElement {
   divider2.classList.add('divider');
 
   // Put them all together
-  main.appendChild(divider1);
-  main.appendChild(header);
-  main.appendChild(question);
-  main.appendChild(options);
-  main.appendChild(divider2);
+  main_div.appendChild(divider1);
+  main_div.appendChild(header);
+  main_div.appendChild(question);
+  main_div.appendChild(options);
+  main_div.appendChild(divider2);
 
-  return main;
+  return main_div;
 }
 
 /**
@@ -242,10 +251,12 @@ function slideTransition(
 ): void {
   element.classList.add('slide-' + direction);
   element.classList.add('fade-' + in_out);
-  // When the animation is done, remove the element
-  element.addEventListener('animationend', () => {
-    element.remove();
-  });
+  // If we're sliding out, remove the element.
+  if (in_out === 'out') {
+    element.addEventListener('animationend', () => {
+      element.remove();
+    });
+  }
   // TODO: handle focus
 }
 
@@ -278,15 +289,19 @@ function setupLinkListeners(data: any, path: string[]): void {
   document.querySelectorAll('main a').forEach((link) => {
     link.addEventListener('click', (event) => {
       event.preventDefault();
+      console.debug('Link clicked: ' + link.getAttribute('data-path'));
       // Add the new path to the path array
       // TODO: Need to include the "contents" containers here too.
-      path.push(link.getAttribute('data-path'));      
+      path.push("contents");
+      path.push(link.getAttribute('data-path'));
+      // Slide the current page to the left and remove it  
+      slideTransition(document.querySelector('#bigbox'), 'left', 'out');
       // Get the html for where we're going
       let html = constructHTML(getData(data, path), path);
-      // Slide the current page to the left and remove it  
-      slideTransition(document.querySelector('main'), 'left', 'out');
+      // Add it to the main.
+      document.querySelector('main').appendChild(html);
       // Slide the new page in from the right
-      slideTransition(html, 'right', 'in');
+      slideTransition(html, 'left', 'in');
       // Reset the listeners
       setupLinkListeners(data, path);
     });
