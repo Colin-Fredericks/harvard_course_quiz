@@ -34,7 +34,7 @@ function getGoing() {
             nav.insertBefore(breadcrumbs, nav.firstChild);
             // Make the options visible.
             document.querySelector('.ghost').classList.remove('ghost');
-            setupLinkListeners(pane, data_structure, path);
+            setupLinkListeners(data_structure, path);
             // No need to set breadcrumb listeners on the first page
         });
     });
@@ -255,9 +255,9 @@ function makeBreadcrumbs(data, path) {
  * @param {Array} path The path to the current location.
  * @returns {void}
  */
-function setupLinkListeners(box, data, path) {
+function setupLinkListeners(data, path) {
     // When someone clicks a link...
-    box.querySelectorAll('a').forEach((link) => {
+    document.querySelectorAll('.bigbox a').forEach((link) => {
         link.addEventListener('click', (event) => {
             event.preventDefault();
             console.debug('Link clicked: ' + link.getAttribute('data-path'));
@@ -265,17 +265,17 @@ function setupLinkListeners(box, data, path) {
             // TODO: Need to include the "contents" containers here too.
             path.push('contents');
             path.push(link.getAttribute('data-path'));
-            // Get the html for where we're going
-            let html = constructHTML(getData(data, path), path);
-            // Add it to the main.
-            document.querySelector('main').appendChild(html);
             // Slide the current page to the left and remove it
             slideTransition(document.querySelector('.bigbox'), 'left', 'out');
+            // Get the html for where we're going
+            let pane = constructHTML(getData(data, path), path);
+            // Add it to the main.
+            document.querySelector('main').appendChild(pane);
             // Slide the new page in from the right
-            html.style.display = 'block';
-            slideTransition(html, 'left', 'in');
+            pane.style.display = 'block';
+            slideTransition(pane, 'right', 'in');
             // Reset the listeners
-            setupLinkListeners(html, data, path);
+            setupLinkListeners(data, path);
         });
     });
 }
