@@ -2,6 +2,7 @@
 // import 'css/materialize.min.css';
 // import 'css/materialize.min.js';
 
+let data_file_name = 'data/Test_Quiz.txt';
 getGoing();
 
 // TODO: the rest of the code is firing before the data is loaded.
@@ -10,7 +11,7 @@ getGoing();
 async function getGoing() {
   let path = [];
 
-  fetch('data/Course_Quiz.txt')
+  fetch(data_file_name)
     .then((response) => response.text())
     .catch((error) => {
       console.debug(error);
@@ -246,7 +247,6 @@ function slideTransition(
   direction: string,
   in_out: string
 ): void {
-
   element.classList.add('slide-' + direction, 'fade-' + in_out);
 
   // If we're sliding out, remove the element.

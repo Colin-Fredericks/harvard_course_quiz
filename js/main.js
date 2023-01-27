@@ -10,13 +10,14 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+let data_file_name = 'data/Test_Quiz.txt';
 getGoing();
 // TODO: the rest of the code is firing before the data is loaded.
 // Need to wait for the data to load before doing anything else.
 function getGoing() {
     return __awaiter(this, void 0, void 0, function* () {
         let path = [];
-        fetch('data/Course_Quiz.txt')
+        fetch(data_file_name)
             .then((response) => response.text())
             .catch((error) => {
             console.debug(error);

@@ -17,7 +17,8 @@
     "watch": "npm-watch",
     "build": "tsc --outDir js",
     "serve": "python3 -m http.server &",
-    "start": "npm run build && python3 -m http.server & npm run watch"
+    "start": "npm run build && npm run watch & npm run serve",
+    "stop": "pkill -f http.server && pkill -f npm-watch && pkill -f nodemon"
   },
   "repository": {
     "type": "git",
