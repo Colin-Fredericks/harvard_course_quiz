@@ -24,15 +24,15 @@ async function getGoing() {
       let main = document.querySelector('main');
       let nav = document.querySelector('nav');
 
-      // This is just to test that the script is loading. Take out later.
-      body.insertBefore(document.createElement('hr'), body.firstChild);
+      let pane = constructHTML(data_structure, path);
+      let breadcrumbs = makeBreadcrumbs(data_structure, path);
 
-      main.insertBefore(constructHTML(data_structure, path), main.firstChild);
-      nav.insertBefore(makeBreadcrumbs(data_structure, path), nav.firstChild);
+      main.insertBefore(pane, main.firstChild);
+      nav.insertBefore(breadcrumbs, nav.firstChild);
       // Make the options visible.
-      document.getElementById('bigbox').style.opacity = '1';
+      document.querySelector('.ghost').classList.remove('ghost');
 
-      setupLinkListeners(data_structure, path);
+      setupLinkListeners(pane, data_structure, path);
       // No need to set breadcrumb listeners on the first page
     });
 }
@@ -137,7 +137,8 @@ function buildStructure(grid: any[]): any {
 }
 
 /**
- * @description: Constructs the HTML for the data. Note that this is hidden by default.
+ * @description: Constructs the HTML for the data.
+ * Note that this is transparent and hidden by default.
  * You will need to un-hide it when you're ready to display it.
  * @param {Object} data A slice of the total data object.
  * @returns {HTMLElement} The HTML element containing the title, question, and cards.
@@ -148,10 +149,7 @@ function constructHTML(data: any, path: string[]): HTMLElement {
 
   // Make the container tag.
   let main_div = document.createElement('div');
-  main_div.classList.add('container');
-  main_div.id = 'bigbox';
-  // Set the opacity to 0 so it's hidden by default.
-  main_div.style.opacity = '0';
+  main_div.classList.add('container', 'ghost', 'bigbox');
 
   let divider1 = document.createElement('div');
   divider1.classList.add('divider');
@@ -236,7 +234,6 @@ function createCard(data: any, num_cards: number): HTMLElement {
   return card;
 }
 
-
 /**
  * @description Slides an element to the left while fading it out.
  * @param {HTMLElement} element The element to slide.
@@ -249,8 +246,9 @@ function slideTransition(
   direction: string,
   in_out: string
 ): void {
-  element.classList.add('slide-' + direction);
-  element.classList.add('fade-' + in_out);
+
+  element.classList.add('slide-' + direction, 'fade-' + in_out);
+
   // If we're sliding out, remove the element.
   if (in_out === 'out') {
     element.addEventListener('animationend', () => {
@@ -282,28 +280,32 @@ function makeBreadcrumbs(data: any, path: string[]): HTMLElement {
 
 /**
  * @description: Set up the link listeners.
+ * @param {HTMLElement} box The place we're attaching the listeners.
+ * @param {Object} data The whole data object.
+ * @param {Array} path The path to the current location.
  * @returns {void}
  */
-function setupLinkListeners(data: any, path: string[]): void {
+function setupLinkListeners(box: HTMLElement, data: any, path: string[]): void {
   // When someone clicks a link...
-  document.querySelectorAll('main a').forEach((link) => {
+  box.querySelectorAll('a').forEach((link) => {
     link.addEventListener('click', (event) => {
       event.preventDefault();
       console.debug('Link clicked: ' + link.getAttribute('data-path'));
       // Add the new path to the path array
       // TODO: Need to include the "contents" containers here too.
-      path.push("contents");
+      path.push('contents');
       path.push(link.getAttribute('data-path'));
-      // Slide the current page to the left and remove it  
-      slideTransition(document.querySelector('#bigbox'), 'left', 'out');
       // Get the html for where we're going
       let html = constructHTML(getData(data, path), path);
       // Add it to the main.
       document.querySelector('main').appendChild(html);
+      // Slide the current page to the left and remove it
+      slideTransition(document.querySelector('.bigbox'), 'left', 'out');
       // Slide the new page in from the right
+      html.style.display = 'block';
       slideTransition(html, 'left', 'in');
       // Reset the listeners
-      setupLinkListeners(data, path);
+      setupLinkListeners(html, data, path);
     });
   });
 }

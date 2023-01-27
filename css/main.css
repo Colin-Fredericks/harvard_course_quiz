@@ -1,3 +1,7 @@
+main {
+  overflow: hidden;
+}
+
 #breadcrumbs {
   border: none;
 }
@@ -19,6 +23,13 @@
 #harvard {
   border: none;
 }
+
+.ghost {
+  opacity: 0;
+  display: none;
+}
+
+/* Slide animations */
 
 .slide-left.fade-out{
   position: relative;
@@ -43,16 +54,16 @@
 
 @keyframes slide-to-left {
   from {left: 0px;}
-  to {left: -600px;}
+  to {left: -100%;}
 }
 
 @keyframes slide-to-right {
   from {left: 0px;}
-  to {left: 600px;}
+  to {left: 100%;}
 }
 
 @keyframes slide-from-left {
-  from {left: 600px;}
+  from {left: -100%;}
   to {left: 0px;}
 }
 
