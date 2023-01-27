@@ -1,0 +1,76 @@
+﻿Start Here
+	Title: What Harvard course is right for me?
+	Text: I'm interested in...
+	Image: start.png
+	Alt: Starting point
+	Professional Development
+		Blurb: (placeholder)
+		Title: Professional Development
+		Text: I work in...
+		Image: whatevs.png
+		Alt: image alt text
+		The Nonprofit Sector
+			Blurb: private or government
+			Title: Nonprofit
+			Text: Take a leading role with (Strategy Execution for Public Leadership)[https://www.harvardonline.harvard.edu/course/strategy-execution-public-leadership]
+			Image: StratEx.jpg
+			Alt: Pretty sure StratEx is a Decepticon, so watch out.
+		Business or Entrepreneurship
+			Blurb: 
+			Title: Business
+			Text: Put your company at the forefront with (Open Innovation)[https://www.harvardonline.harvard.edu/course/open-innovation]
+			Image: OI.jpg
+			Alt: open innovation image
+		Health Care
+			Blurb: 
+			Title: Health Care
+			Text: Make health care more equitable with [Reducing Racial Disparities in Health Care](https://www.harvardonline.harvard.edu/course/reducing-racial-disparities-health-care)
+			Image: StratEx.jpg
+			Alt: RRD
+		
+
+	Personal Development
+		Blurb: 
+		Title: Personal Development
+		Text: I want to learn how to...
+		Image: whatevs.png
+		Alt: image alt text
+		Justice
+			Blurb: Make the world a more just place
+			Title: Justice
+			Text: (Justice)[https://www.edx.org/course/justice-2] is an introduction to moral and political philosophy. It's one of the most popular courses taught at Harvard College.
+			Image: justice.png
+			Alt: image alt text
+		Happiness
+			Blurb: Feel happier and manage stress
+			Title: Resiliency
+			Text: Let's look into (Building Personal Resilience: Managing Anxiety and Mental Health)[https://www.edx.org/course/building-personal-resilience-managing-anxiety-and-mental-health]
+			Image: justice.png
+			Alt: image alt text
+		Religion
+			Blurb: Interpret and understand religious and spiritual texts
+			Title: Resiliency
+			Text: If you want to understand the world's religious, start with (Religious Literacy: Traditions and Scriptures)[https://www.edx.org/course/religious-literacy-traditions-and-scriptures]
+			Image: justice.png
+			Alt: image alt text
+
+
+	Learning something just for fun!
+		Title: Learning something just for fun!
+		Text: I want to explore...
+		Cooking
+			Title: Resiliency
+			Text: Let's get scientific about it! [Science & Cooking: From Haute Cuisine to Soft Matter Science](https://www.edx.org/course/science-cooking-from-haute-cuisine-to-soft-matte-2)
+			Image: justice.png
+			Alt: image alt text
+		Music
+			Title: Music
+			Text: Let's start with a classic first performance: [Monteverdi's L'Orfeo and the Birth of Opera](https://www.edx.org/course/first-nights-monteverdis-lorfeo-and-the-birth-of-o)
+			Image: opera.png
+			Alt: image alt text
+		Mysteries
+			Title: Mysteries
+			Text: [PredictionX: Omens, Oracles, and Prophecy](https://www.edx.org/course/omens-oracles-prophecies)
+			Image: oop.png
+			Alt: image alt text
+
