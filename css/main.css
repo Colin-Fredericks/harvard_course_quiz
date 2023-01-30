@@ -1,5 +1,6 @@
 main {
   overflow: hidden;
+  position: relative;
 }
 
 #breadcrumbs {
@@ -20,7 +21,11 @@ main {
   border: none;
 }
 
-#harvard {
+.bigbox {
+  position: relative;
+}
+
+.footer-copyright {
   border: none;
 }
 
@@ -34,11 +39,15 @@ main {
 .slide-left.fade-out{
   position: relative;
   animation: slide-to-left 1000ms, fade-out 800ms forwards;
+  position: absolute; /* make it take up no space */
+  left: 15%;  /* center div is 70% wide */
 }
 
 .slide-right.fade-out{
   position: relative;
   animation: slide-to-right 1000ms, fade-out 800ms forwards;
+  position: absolute; /* make it take up no space */
+  left: 15%;  /* center div is 70% wide */
 }
 
 .slide-left.fade-in{

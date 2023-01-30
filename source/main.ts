@@ -3,6 +3,8 @@
 // import 'css/materialize.min.js';
 
 let data_file_name = 'data/Test_Quiz.txt';
+let used_colors = [];
+
 getGoing();
 
 // TODO: the rest of the code is firing before the data is loaded.
@@ -159,7 +161,7 @@ function constructHTML(data: any, path: string[]): HTMLElement {
   header.id = 'header';
   header.classList.add('row', 's12');
   let header_text = document.createElement('h3');
-  header_text.innerText = data.data.name;
+  header_text.innerText = data.data.title;
   header.appendChild(header_text);
 
   let question = document.createElement('div');
@@ -211,7 +213,7 @@ function createCard(data: any, num_cards: number): HTMLElement {
   link.href = '#!';
   link.dataset.path = data.data.path;
   let card_div = document.createElement('div');
-  card_div.classList.add('card', 'blue-grey', 'darken-1', 'hoverable');
+  card_div.classList.add('card', getRandomColor(), 'darken-2', 'hoverable');
   let card_content = document.createElement('div');
   card_content.classList.add('card-content', 'white-text');
   let card_title = document.createElement('p');
@@ -299,6 +301,7 @@ function setupLinkListeners(data: any, path: string[]): void {
       slideTransition(document.querySelector('.bigbox'), 'left', 'out');
       // Get the html for where we're going
       let pane = constructHTML(getData(data, path), path);
+      pane.classList.remove('ghost');
       // Add it to the main.
       document.querySelector('main').appendChild(pane);
       // Slide the new page in from the right
@@ -358,4 +361,42 @@ function getData(data: any, path: Array<string>): any {
     current = current[path[i]];
   }
   return current;
+}
+
+/**
+ * @description: Gets a random color from the Materialize color palette.
+ * Also makes sure that the color isn't already in use.
+ * @returns {string} A random color.
+ */
+function getRandomColor(): string {
+  // The brighter colors are currently commented out,
+  // because the text is white. If you reverse one, reverse the other.
+
+  let colors = [
+    'red',
+    // 'pink',
+    'purple',
+    'deep-purple',
+    'indigo',
+    'blue',
+    // 'light-blue',
+    // 'cyan',
+    'teal',
+    'green',
+    'light-green',
+    // 'lime',
+    // 'yellow',
+    // 'amber',
+    // 'orange',
+    // 'deep-orange',
+    'brown',
+    // 'grey',
+    'blue-grey',
+  ];
+  let color = colors[Math.floor(Math.random() * colors.length)];
+  if (used_colors.includes(color)) {
+    return getRandomColor();
+  }
+  used_colors.push(color);
+  return color;
 }

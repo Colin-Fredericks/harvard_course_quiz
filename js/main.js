@@ -11,6 +11,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 let data_file_name = 'data/Test_Quiz.txt';
+let used_colors = [];
 getGoing();
 // TODO: the rest of the code is firing before the data is loaded.
 // Need to wait for the data to load before doing anything else.
@@ -152,7 +153,7 @@ function constructHTML(data, path) {
     header.id = 'header';
     header.classList.add('row', 's12');
     let header_text = document.createElement('h3');
-    header_text.innerText = data.data.name;
+    header_text.innerText = data.data.title;
     header.appendChild(header_text);
     let question = document.createElement('div');
     question.id = 'question';
@@ -193,7 +194,7 @@ function createCard(data, num_cards) {
     link.href = '#!';
     link.dataset.path = data.data.path;
     let card_div = document.createElement('div');
-    card_div.classList.add('card', 'blue-grey', 'darken-1', 'hoverable');
+    card_div.classList.add('card', getRandomColor(), 'darken-2', 'hoverable');
     let card_content = document.createElement('div');
     card_content.classList.add('card-content', 'white-text');
     let card_title = document.createElement('p');
@@ -270,6 +271,7 @@ function setupLinkListeners(data, path) {
             slideTransition(document.querySelector('.bigbox'), 'left', 'out');
             // Get the html for where we're going
             let pane = constructHTML(getData(data, path), path);
+            pane.classList.remove('ghost');
             // Add it to the main.
             document.querySelector('main').appendChild(pane);
             // Slide the new page in from the right
@@ -320,5 +322,41 @@ function getData(data, path) {
         current = current[path[i]];
     }
     return current;
+}
+/**
+ * @description: Gets a random color from the Materialize color palette.
+ * Also makes sure that the color isn't already in use.
+ * @returns {string} A random color.
+ */
+function getRandomColor() {
+    // The brighter colors are currently commented out,
+    // because the text is white. If you reverse one, reverse the other.
+    let colors = [
+        'red',
+        // 'pink',
+        'purple',
+        'deep-purple',
+        'indigo',
+        'blue',
+        // 'light-blue',
+        // 'cyan',
+        'teal',
+        'green',
+        'light-green',
+        // 'lime',
+        // 'yellow',
+        // 'amber',
+        // 'orange',
+        // 'deep-orange',
+        'brown',
+        // 'grey',
+        'blue-grey',
+    ];
+    let color = colors[Math.floor(Math.random() * colors.length)];
+    if (used_colors.includes(color)) {
+        return getRandomColor();
+    }
+    used_colors.push(color);
+    return color;
 }
 //# sourceMappingURL=main.js.map
