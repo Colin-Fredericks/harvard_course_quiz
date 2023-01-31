@@ -1,6 +1,13 @@
 main {
   overflow: hidden;
   position: relative;
+  flex: 1 0 auto;
+}
+
+body {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
 }
 
 #breadcrumbs {
@@ -27,6 +34,8 @@ main {
 
 .footer-copyright {
   border: none;
+  padding: .5em;
+  width: 100vw;
 }
 
 .ghost {

@@ -181,6 +181,11 @@ function constructHTML(data: any, path: string[]): HTMLElement {
   question_text.innerHTML = DOMPurify.sanitize(
     marked.parse(data.data.text)
   );
+  // Make any links open in a new tab
+  let links = question_text.getElementsByTagName('a');
+  for (let i = 0; i < links.length; i++) {
+    links[i].setAttribute('target', '_blank');
+  }
   question.appendChild(question_text);
 
   let options = document.createElement('div');
@@ -224,7 +229,6 @@ function createCard(data: any, num_cards: number): HTMLElement {
   let link = document.createElement('a');
   link.href = '#!';
   link.classList.add('card-link');
-  link.target = '_blank';
   link.dataset.path = data.data.path;
   let card_div = document.createElement('div');
   card_div.classList.add('card', getRandomColor(), 'darken-2', 'hoverable');
