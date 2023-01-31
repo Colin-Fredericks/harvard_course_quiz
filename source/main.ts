@@ -272,7 +272,6 @@ function slideTransition(
       element.remove();
     });
   }
-  // TODO: handle focus
 }
 
 /**
@@ -321,6 +320,8 @@ function setupLinkListeners(pane: HTMLElement, data: any, path: string[]): void 
       slideTransition(pane, 'left', 'out');
       // Slide the new page in from the right
       slideTransition(new_pane, 'right', 'in');
+      // Set the focus to the new pane's header.
+      new_pane.querySelector('h3').focus();
       // Reset the listeners
       setupLinkListeners(new_pane, data, path);
     });
