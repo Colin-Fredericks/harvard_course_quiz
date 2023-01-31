@@ -27,7 +27,6 @@ function getGoing() {
             .then((data) => processData(data))
             .then((data_structure) => {
             // console.debug(data_structure);
-            let body = document.querySelector('body');
             let main = document.querySelector('main');
             let nav = document.querySelector('nav');
             let pane = constructHTML(data_structure, path);
@@ -36,7 +35,7 @@ function getGoing() {
             nav.insertBefore(breadcrumbs, nav.firstChild);
             // Make the options visible.
             document.querySelector('.ghost').classList.remove('ghost');
-            setupLinkListeners(data_structure, path);
+            setupLinkListeners(pane, data_structure, path);
             // No need to set breadcrumb listeners on the first page
         });
     });
@@ -145,8 +144,8 @@ function constructHTML(data, path) {
     console.debug('constructHTML');
     console.debug(data);
     // Make the container tag.
-    let main_div = document.createElement('div');
-    main_div.classList.add('container', 'ghost', 'bigbox');
+    let continer_div = document.createElement('div');
+    continer_div.classList.add('container', 'ghost', 'bigbox');
     let divider1 = document.createElement('div');
     divider1.classList.add('divider');
     let header = document.createElement('div');
@@ -172,12 +171,12 @@ function constructHTML(data, path) {
     let divider2 = document.createElement('div');
     divider2.classList.add('divider');
     // Put them all together
-    main_div.appendChild(divider1);
-    main_div.appendChild(header);
-    main_div.appendChild(question);
-    main_div.appendChild(options);
-    main_div.appendChild(divider2);
-    return main_div;
+    continer_div.appendChild(divider1);
+    continer_div.appendChild(header);
+    continer_div.appendChild(question);
+    continer_div.appendChild(options);
+    continer_div.appendChild(divider2);
+    return continer_div;
 }
 /**
  * @description: Creates an option card.
@@ -223,6 +222,7 @@ function createCard(data, num_cards) {
  * @returns {void}
  */
 function slideTransition(element, direction, in_out) {
+    element.classList.remove('slide-left', 'slide-right', 'fade-in', 'fade-out');
     element.classList.add('slide-' + direction, 'fade-' + in_out);
     // If we're sliding out, remove the element.
     if (in_out === 'out') {
@@ -257,9 +257,9 @@ function makeBreadcrumbs(data, path) {
  * @param {Array} path The path to the current location.
  * @returns {void}
  */
-function setupLinkListeners(data, path) {
+function setupLinkListeners(pane, data, path) {
     // When someone clicks a link...
-    document.querySelectorAll('.bigbox a').forEach((link) => {
+    pane.querySelectorAll('a').forEach((link) => {
         link.addEventListener('click', (event) => {
             event.preventDefault();
             console.debug('Link clicked: ' + link.getAttribute('data-path'));
@@ -267,18 +267,17 @@ function setupLinkListeners(data, path) {
             // TODO: Need to include the "contents" containers here too.
             path.push('contents');
             path.push(link.getAttribute('data-path'));
-            // Slide the current page to the left and remove it
-            slideTransition(document.querySelector('.bigbox'), 'left', 'out');
             // Get the html for where we're going
-            let pane = constructHTML(getData(data, path), path);
-            pane.classList.remove('ghost');
+            let new_pane = constructHTML(getData(data, path), path);
+            new_pane.classList.remove('ghost');
             // Add it to the main.
-            document.querySelector('main').appendChild(pane);
+            document.querySelector('main').appendChild(new_pane);
+            // Slide the current page to the left and remove it
+            slideTransition(pane, 'left', 'out');
             // Slide the new page in from the right
-            pane.style.display = 'block';
-            slideTransition(pane, 'right', 'in');
+            slideTransition(new_pane, 'right', 'in');
             // Reset the listeners
-            setupLinkListeners(data, path);
+            setupLinkListeners(new_pane, data, path);
         });
     });
 }
