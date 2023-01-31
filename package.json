@@ -15,9 +15,9 @@
     "target": "es7",
     "test": "echo \"Error: no test specified\" && exit 1",
     "watch": "npm-watch",
-    "build": "tsc --outDir js",
+    "build": "webpack && tsc --outDir js",
     "serve": "python3 -m http.server &",
-    "start": "npm run build && npm run watch & npm run serve",
+    "start": "webpack && npm run build && npm run watch & npm run serve",
     "stop": "pkill -f http.server && pkill -f npm-watch && pkill -f nodemon"
   },
   "repository": {
@@ -35,9 +35,12 @@
     "@types/dompurify": "^2.4.0",
     "@types/marked": "^4.0.8",
     "dompurify": "^2.4.3",
-    "marked": "^4.2.5",
+    "marked": "^4.2.12",
     "npm-watch": "^0.11.0",
-    "trusted-types": "^2.0.0"
+    "trusted-types": "^2.0.0",
+    "ts-loader": "^9.4.2",
+    "webpack": "^5.75.0",
+    "webpack-cli": "^5.0.1"
   },
   "devDependencies": {
     "typescript": "^4.9.4"

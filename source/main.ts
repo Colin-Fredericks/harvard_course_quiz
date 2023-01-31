@@ -1,9 +1,10 @@
-// Bring in Materialize
-// import 'css/materialize.min.css';
-// import 'css/materialize.min.js';
+import { marked } from 'marked'
+import { DOMPurifyI } from 'dompurify';
+import * as DOMPurify from 'dompurify';
 
 let data_file_name = 'data/Test_Quiz.txt';
 let used_colors = [];
+
 
 getGoing();
 
@@ -96,10 +97,18 @@ function buildStructure(grid: any[]): any {
   let last_depth = 0;
 
   for (let i = 0; i < grid.length; i++) {
-    // Get the key and value
-    let [key, value] = grid[i].text
+    // Get the key and value.
+    // The first colon is the separator between key and value.
+    // Later colons are just part of the text.
+    let pieces = grid[i].text
       .split(':')
       .map((item: string) => item.trim());
+
+    let [key, value] = pieces;
+
+    if (pieces.length > 2) {
+      value = pieces.slice(1).join(':');
+    }
 
     if (i === 0) {
       data_structure.data.name = key;
@@ -146,8 +155,8 @@ function buildStructure(grid: any[]): any {
  * @returns {HTMLElement} The HTML element containing the title, question, and cards.
  */
 function constructHTML(data: any, path: string[]): HTMLElement {
-  console.debug('constructHTML');
-  console.debug(data);
+  // console.debug('constructHTML');
+  // console.debug(data);
 
   // Make the container tag.
   let continer_div = document.createElement('div');
@@ -166,8 +175,13 @@ function constructHTML(data: any, path: string[]): HTMLElement {
   let question = document.createElement('div');
   question.id = 'question';
   question.classList.add('row', 's12', 'center-align');
-  let question_text = document.createElement('h3');
-  question_text.innerText = data.data.text;
+  let question_text = document.createElement('div');
+  question_text.classList.add('question-text');
+  console.debug(data.data.text);
+  question_text.innerHTML = DOMPurify.sanitize(
+    data.data.text
+    // marked.parse(data.data.text)
+  );
   question.appendChild(question_text);
 
   let options = document.createElement('div');
@@ -202,8 +216,8 @@ function constructHTML(data: any, path: string[]): HTMLElement {
  * @returns {HTMLElement} The HTML element containing a single card.
  */
 function createCard(data: any, num_cards: number): HTMLElement {
-  console.debug('createCard');
-  console.debug(data);
+  // console.debug('createCard');
+  // console.debug(data);
   let width = String(Math.round(12 / num_cards));
 
   let card = document.createElement('div');
@@ -266,7 +280,7 @@ function slideTransition(
  * @returns {HTMLElement} The HTML element containing the breadcrumbs.
  */
 function makeBreadcrumbs(data: any, path: string[]): HTMLElement {
-  console.debug('makeBreadcrumbs');
+  // console.debug('makeBreadcrumbs');
   // Create the breadcrumb container
   // Create the breadcrumb elements
   // Put them together
@@ -292,7 +306,7 @@ function setupLinkListeners(pane: HTMLElement, data: any, path: string[]): void 
   pane.querySelectorAll('a').forEach((link) => {
     link.addEventListener('click', (event) => {
       event.preventDefault();
-      console.debug('Link clicked: ' + link.getAttribute('data-path'));
+      // console.debug('Link clicked: ' + link.getAttribute('data-path'));
       // Add the new path to the path array
       // TODO: Need to include the "contents" containers here too.
       path.push('contents');
