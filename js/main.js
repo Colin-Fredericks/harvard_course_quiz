@@ -7,6 +7,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+import { marked } from 'marked';
 import * as DOMPurify from 'dompurify';
 let data_file_name = 'data/Test_Quiz.txt';
 let used_colors = [];
@@ -164,9 +165,7 @@ function constructHTML(data, path) {
     let question_text = document.createElement('div');
     question_text.classList.add('question-text');
     console.debug(data.data.text);
-    question_text.innerHTML = DOMPurify.sanitize(data.data.text
-    // marked.parse(data.data.text)
-    );
+    question_text.innerHTML = DOMPurify.sanitize(marked.parse(data.data.text));
     question.appendChild(question_text);
     let options = document.createElement('div');
     options.classList.add('row', 's12', 'center-align');
@@ -199,6 +198,8 @@ function createCard(data, num_cards) {
     card.classList.add('col', 'm' + width); // Need to adjust m2/3/4/6 for number of cards
     let link = document.createElement('a');
     link.href = '#!';
+    link.classList.add('card-link');
+    link.target = '_blank';
     link.dataset.path = data.data.path;
     let card_div = document.createElement('div');
     card_div.classList.add('card', getRandomColor(), 'darken-2', 'hoverable');
@@ -267,7 +268,7 @@ function makeBreadcrumbs(data, path) {
  */
 function setupLinkListeners(pane, data, path) {
     // When someone clicks a link...
-    pane.querySelectorAll('a').forEach((link) => {
+    document.querySelectorAll('a.card-link').forEach((link) => {
         link.addEventListener('click', (event) => {
             event.preventDefault();
             // console.debug('Link clicked: ' + link.getAttribute('data-path'));

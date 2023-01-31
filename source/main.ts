@@ -179,8 +179,7 @@ function constructHTML(data: any, path: string[]): HTMLElement {
   question_text.classList.add('question-text');
   console.debug(data.data.text);
   question_text.innerHTML = DOMPurify.sanitize(
-    data.data.text
-    // marked.parse(data.data.text)
+    marked.parse(data.data.text)
   );
   question.appendChild(question_text);
 
@@ -224,6 +223,8 @@ function createCard(data: any, num_cards: number): HTMLElement {
   card.classList.add('col', 'm' + width); // Need to adjust m2/3/4/6 for number of cards
   let link = document.createElement('a');
   link.href = '#!';
+  link.classList.add('card-link');
+  link.target = '_blank';
   link.dataset.path = data.data.path;
   let card_div = document.createElement('div');
   card_div.classList.add('card', getRandomColor(), 'darken-2', 'hoverable');
@@ -303,7 +304,7 @@ function makeBreadcrumbs(data: any, path: string[]): HTMLElement {
  */
 function setupLinkListeners(pane: HTMLElement, data: any, path: string[]): void {
   // When someone clicks a link...
-  pane.querySelectorAll('a').forEach((link) => {
+  document.querySelectorAll('a.card-link').forEach((link) => {
     link.addEventListener('click', (event) => {
       event.preventDefault();
       // console.debug('Link clicked: ' + link.getAttribute('data-path'));

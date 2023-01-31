@@ -12,13 +12,13 @@
 		The Nonprofit Sector
 			Blurb: private or government
 			Title: Nonprofit
-			Text: Take a leading role with (Strategy Execution for Public Leadership)[https://www.harvardonline.harvard.edu/course/strategy-execution-public-leadership]
+			Text: Take a leading role with [Strategy Execution for Public Leadership](https://www.harvardonline.harvard.edu/course/strategy-execution-public-leadership)
 			Image: StratEx.jpg
 			Alt: Pretty sure StratEx is a Decepticon, so watch out.
 		Business or Entrepreneurship
 			Blurb: 
 			Title: Business
-			Text: Put your company at the forefront with (Open Innovation)[https://www.harvardonline.harvard.edu/course/open-innovation]
+			Text: Put your company at the forefront with [Open Innovation](https://www.harvardonline.harvard.edu/course/open-innovation)
 			Image: OI.jpg
 			Alt: open innovation image
 		Health Care
@@ -38,19 +38,19 @@
 		Justice
 			Blurb: Make the world a more just place
 			Title: Justice
-			Text: (Justice)[https://www.edx.org/course/justice-2] is an introduction to moral and political philosophy. It's one of the most popular courses taught at Harvard College.
+			Text: [Justice](https://www.edx.org/course/justice-2) is an introduction to moral and political philosophy. It's one of the most popular courses taught at Harvard College.
 			Image: justice.png
 			Alt: image alt text
 		Happiness
 			Blurb: Feel happier and manage stress
 			Title: Resiliency
-			Text: Let's look into (Building Personal Resilience: Managing Anxiety and Mental Health)[https://www.edx.org/course/building-personal-resilience-managing-anxiety-and-mental-health]
+			Text: Let's look into [Building Personal Resilience: Managing Anxiety and Mental Health](https://www.edx.org/course/building-personal-resilience-managing-anxiety-and-mental-health)
 			Image: justice.png
 			Alt: image alt text
 		Religion
 			Blurb: Interpret and understand religious and spiritual texts
 			Title: Resiliency
-			Text: If you want to understand the world's religious, start with (Religious Literacy: Traditions and Scriptures)[https://www.edx.org/course/religious-literacy-traditions-and-scriptures]
+			Text: If you want to understand the world's religious, start with [Religious Literacy: Traditions and Scriptures](https://www.edx.org/course/religious-literacy-traditions-and-scriptures)
 			Image: justice.png
 			Alt: image alt text
 
@@ -60,7 +60,7 @@
 		Text: I want to explore...
 		Cooking
 			Title: Resiliency
-			Text: Let's get scientific about it! [Science & Cooking: From Haute Cuisine to Soft Matter Science](https://www.edx.org/course/science-cooking-from-haute-cuisine-to-soft-matte-2)
+			Text: Let's get scientific about it! (Science & Cooking: From Haute Cuisine to Soft Matter Science](https://www.edx.org/course/science-cooking-from-haute-cuisine-to-soft-matte-2)
 			Image: justice.png
 			Alt: image alt text
 		Music
