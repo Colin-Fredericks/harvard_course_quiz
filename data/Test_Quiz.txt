@@ -49,7 +49,7 @@
 			Alt: image alt text
 		Religion
 			Blurb: Interpret and understand religious and spiritual texts
-			Title: Resiliency
+			Title: Religion
 			Text: If you want to understand the world's religious, start with [Religious Literacy: Traditions and Scriptures](https://www.edx.org/course/religious-literacy-traditions-and-scriptures)
 			Image: justice.png
 			Alt: image alt text
@@ -59,7 +59,7 @@
 		Title: Learning something just for fun!
 		Text: I want to explore...
 		Cooking
-			Title: Resiliency
+			Title: Cooking
 			Text: Let's get scientific about it! (Science & Cooking: From Haute Cuisine to Soft Matter Science](https://www.edx.org/course/science-cooking-from-haute-cuisine-to-soft-matte-2)
 			Image: justice.png
 			Alt: image alt text
@@ -70,7 +70,7 @@
 			Alt: image alt text
 		Mysteries
 			Title: Mysteries
-			Text: [PredictionX: Omens, Oracles, and Prophecy](https://www.edx.org/course/omens-oracles-prophecies)
+			Text: Learn how people have always tried to fathom the unfathomable in [PredictionX: Omens, Oracles, and Prophecy](https://www.edx.org/course/omens-oracles-prophecies)
 			Image: oop.png
 			Alt: image alt text
 
