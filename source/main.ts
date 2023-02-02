@@ -22,12 +22,12 @@ async function getGoing() {
     })
     .then((data) => processData(data))
     .then((data_structure) => {
-      // console.debug(data_structure);
+      console.debug(data_structure);
 
       let main = document.querySelector('main');
       let nav = document.querySelector('nav');
 
-      let pane = constructHTML(data_structure, path);
+      let pane = constructHTML(data_structure);
       let breadcrumbs = makeBreadcrumbs(data_structure, path);
 
       main.insertBefore(pane, main.firstChild);
@@ -93,13 +93,14 @@ async function processData(data: string): Promise<any> {
  */
 function buildStructure(grid: any[]): any {
   let data_structure: any = { data: {}, contents: {} };
-  let path: Array<string> = [];
+  let path: string[] = [];
   let last_depth = 0;
 
   for (let i = 0; i < grid.length; i++) {
     // Get the key and value.
     // The first colon is the separator between key and value.
     // Later colons are just part of the text.
+    // TODO: Spaces after colons currently get trimmed out. Fix that.
     let pieces = grid[i].text
       .split(':')
       .map((item: string) => item.trim());
@@ -134,15 +135,15 @@ function buildStructure(grid: any[]): any {
       // Add the item to the contents
       path.push('contents');
       insertData(data_structure, path, key, {
-        data: { path: key },
+        data: { 'path': key},
         contents: {},
       });
       // Add the item to the path
       path.push(key);
     }
-    // console.debug(data_structure);
     last_depth = grid[i].depth;
   }
+  // console.debug(data_structure);
 
   return data_structure;
 }
@@ -154,8 +155,8 @@ function buildStructure(grid: any[]): any {
  * @param {Object} data A slice of the total data object.
  * @returns {HTMLElement} The HTML element containing the title, question, and cards.
  */
-function constructHTML(data: any, path: string[]): HTMLElement {
-  // console.debug('constructHTML');
+function constructHTML(data: any): HTMLElement {
+  console.debug('constructHTML');
   // console.debug(data);
 
   // Make the container tag.
@@ -177,7 +178,7 @@ function constructHTML(data: any, path: string[]): HTMLElement {
   question.classList.add('row', 's12', 'center-align');
   let question_text = document.createElement('div');
   question_text.classList.add('question-text');
-  console.debug(data.data.text);
+  // console.debug(data.data.text);
   question_text.innerHTML = DOMPurify.sanitize(
     marked.parse(data.data.text)
   );
@@ -220,8 +221,8 @@ function constructHTML(data: any, path: string[]): HTMLElement {
  * @returns {HTMLElement} The HTML element containing a single card.
  */
 function createCard(data: any, num_cards: number): HTMLElement {
-  // console.debug('createCard');
-  // console.debug(data);
+  console.debug('createCard');
+  console.debug(data);
   let width = String(Math.round(12 / num_cards));
 
   let card = document.createElement('div');
@@ -229,7 +230,8 @@ function createCard(data: any, num_cards: number): HTMLElement {
   let link = document.createElement('a');
   link.href = '#!';
   link.classList.add('card-link');
-  link.dataset.path = data.data.path;
+  link.dataset.breadcrumb = data.data.breadcrumb;
+  link.dataset.topic = data.data.path;
   let card_div = document.createElement('div');
   card_div.classList.add('card', getRandomColor(), 'darken-2', 'hoverable');
   let card_content = document.createElement('div');
@@ -284,25 +286,33 @@ function slideTransition(
  * @returns {HTMLElement} The HTML element containing the breadcrumbs.
  */
 function makeBreadcrumbs(data: any, path: string[]): HTMLElement {
-  // console.debug('makeBreadcrumbs');
+  console.debug('makeBreadcrumbs');
+  console.debug(data);
   // Create the breadcrumb container
   let breadcrumbs = document.createElement('div');
   breadcrumbs.classList.add('nav-wrapper');
 
+  // Home should always be on the list.
   let home = document.createElement('a');
+  home.href = '#!';
   home.classList.add('breadcrumb');
   home.innerText = 'Home';
   breadcrumbs.appendChild(home);
 
-  // Create the breadcrumb elements
-  for (let i = 0; i < path.length; i++) {
+  // Create the rest of the breadcrumbs
+  for (let i = 1; i < path.length; i = i + 2) {
+    console.debug(path[i]);
+    console.debug(path.slice(0,i+1));
+    console.debug(data);
+    console.debug(getData(data, path.slice(0,i+1)));
     let crumb = document.createElement('a');
+    crumb.href = '#!';
     crumb.classList.add('breadcrumb');
-    crumb.innerText = ' > ' + getData(data, path);
+    crumb.innerText = getData(data, path.slice(0,i+1)).data.breadcrumb;
+    crumb.dataset.path = path[i];
     breadcrumbs.appendChild(crumb);
   }
 
-  // Put them together
   return breadcrumbs;
 }
 
@@ -318,13 +328,13 @@ function setupLinkListeners(pane: HTMLElement, data: any, path: string[]): void 
   document.querySelectorAll('a.card-link').forEach((link) => {
     link.addEventListener('click', (event) => {
       event.preventDefault();
-      // console.debug('Link clicked: ' + link.getAttribute('data-path'));
+      console.debug('Link clicked: ' + link.getAttribute('data-topic'));
       // Add the new path to the path array
       // TODO: Need to include the "contents" containers here too.
       path.push('contents');
-      path.push(link.getAttribute('data-path'));
+      path.push(link.getAttribute('data-topic'));
       // Get the html for where we're going
-      let new_pane = constructHTML(getData(data, path), path);
+      let new_pane = constructHTML(getData(data, path));
       new_pane.classList.remove('ghost');
       // Add it to the main.
       document.querySelector('main').appendChild(new_pane);
@@ -339,6 +349,7 @@ function setupLinkListeners(pane: HTMLElement, data: any, path: string[]): void 
       // Adjust the breadcrumbs
       document.querySelector('nav').innerHTML = '';
       document.querySelector('nav').appendChild(makeBreadcrumbs(data, path));
+      // setupBreadcrumbListeners();
     });
   });
 }
@@ -349,7 +360,13 @@ function setupLinkListeners(pane: HTMLElement, data: any, path: string[]): void 
  */
 function setupBreadcrumbListeners(): void {
   // When someone clicks a breadcrumb...
-  // Get the html for where we're going
+  document.querySelectorAll('a.breadcrumb').forEach((crumb) => {
+    crumb.addEventListener('click', (event) => {
+      event.preventDefault();
+
+      // Get the html for where we're going
+    })
+  });
   // Slide the current page to the right and remove it
   // Reset the listeners
 }
@@ -367,7 +384,7 @@ function setupBreadcrumbListeners(): void {
  */
 function insertData(
   data_structure: any,
-  path: Array<string>,
+  path: string[],
   key: string,
   value: any
 ): void {
@@ -385,7 +402,7 @@ function insertData(
  * @param {Array} path The path to the item to get.
  * @returns {any} The data at the given path.
  */
-function getData(data: any, path: Array<string>): any {
+function getData(data: any, path: string[]): any {
   let current = data;
   for (let i = 0; i < path.length; i++) {
     current = current[path[i]];
