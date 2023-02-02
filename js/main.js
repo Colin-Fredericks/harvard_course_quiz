@@ -8,7 +8,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 import { marked } from 'marked';
-import * as DOMPurify from 'dompurify';
+import { insane } from 'insane';
 let data_file_name = 'data/Test_Quiz.txt';
 let used_colors = [];
 getGoing();
@@ -61,27 +61,6 @@ function processData(data) {
         return buildStructure(grid);
     });
 }
-/****************************
- * Here's what the structure should look like:
- * data_structure = {
- *  "name": "ITEM_NAME",
- *  "data": {
- *   "title": "TITLE",
- *   "question": "QUESTION",
- *   "image": "IMAGE.png",
- *   etc.
- *  },
- *  "contents": {
- *   "SUBITEM_NAME":{
- *    "name": "SUBITEM_NAME",
- *    "data": { the_data },
- *    "contents": [ more nested stuff ]
- *   },
- *   "SUBITEM_NAME": { another item },
- *   "SUBITEM_NAME": { another item }, etc
- *  }
- * }
- */
 // TODO: Make this handle multiple blank items at the same level
 // (Authors should be able to do that as a placeholder.)
 /**
@@ -165,7 +144,7 @@ function constructHTML(data) {
     let question_text = document.createElement('div');
     question_text.classList.add('question-text');
     // console.debug(data.data.text);
-    question_text.innerHTML = DOMPurify.sanitize(marked.parse(data.data.text));
+    question_text.innerHTML = insane(marked.parse(data.data.text));
     // Make any links open in a new tab
     let links = question_text.getElementsByTagName('a');
     for (let i = 0; i < links.length; i++) {
