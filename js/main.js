@@ -252,14 +252,20 @@ function slideTransition(element, direction, in_out) {
 function makeBreadcrumbs(data, path) {
     // console.debug('makeBreadcrumbs');
     // Create the breadcrumb container
+    let breadcrumbs = document.createElement('div');
+    breadcrumbs.classList.add('nav-wrapper');
+    let home = document.createElement('a');
+    home.classList.add('breadcrumb');
+    home.innerText = 'Home';
+    breadcrumbs.appendChild(home);
     // Create the breadcrumb elements
+    for (let i = 0; i < path.length; i++) {
+        let crumb = document.createElement('a');
+        crumb.classList.add('breadcrumb');
+        crumb.innerText = ' > ' + getData(data, path);
+        breadcrumbs.appendChild(crumb);
+    }
     // Put them together
-    let breadcrumbs = document.createElement('nav');
-    breadcrumbs.id = 'breadcrumbs';
-    breadcrumbs.classList.add('row', 'red', 'darken-4');
-    let nav_wrapper = document.createElement('div');
-    nav_wrapper.classList.add('nav-wrapper');
-    nav_wrapper.innerText = 'Breadcrumbs placeholder';
     return breadcrumbs;
 }
 /**
@@ -292,6 +298,9 @@ function setupLinkListeners(pane, data, path) {
             new_pane.querySelector('h3').focus();
             // Reset the listeners
             setupLinkListeners(new_pane, data, path);
+            // Adjust the breadcrumbs
+            document.querySelector('nav').innerHTML = '';
+            document.querySelector('nav').appendChild(makeBreadcrumbs(data, path));
         });
     });
 }

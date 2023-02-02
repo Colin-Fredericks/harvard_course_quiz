@@ -1,13 +1,18 @@
-main {
-  overflow: hidden;
-  position: relative;
-  flex: 1 0 auto;
-}
-
 body {
   display: flex;
   min-height: 100vh;
   flex-direction: column;
+}
+
+nav {
+  padding-left: 1em;
+  font-weight: bold;
+}
+
+main {
+  overflow: hidden;
+  position: relative;
+  flex: 1 0 auto;
 }
 
 #breadcrumbs {

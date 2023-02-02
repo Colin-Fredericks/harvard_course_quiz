@@ -286,15 +286,23 @@ function slideTransition(
 function makeBreadcrumbs(data: any, path: string[]): HTMLElement {
   // console.debug('makeBreadcrumbs');
   // Create the breadcrumb container
-  // Create the breadcrumb elements
-  // Put them together
-  let breadcrumbs = document.createElement('nav');
-  breadcrumbs.id = 'breadcrumbs';
-  breadcrumbs.classList.add('row', 'red', 'darken-4');
-  let nav_wrapper = document.createElement('div');
-  nav_wrapper.classList.add('nav-wrapper');
+  let breadcrumbs = document.createElement('div');
+  breadcrumbs.classList.add('nav-wrapper');
 
-  nav_wrapper.innerText = 'Breadcrumbs placeholder';
+  let home = document.createElement('a');
+  home.classList.add('breadcrumb');
+  home.innerText = 'Home';
+  breadcrumbs.appendChild(home);
+
+  // Create the breadcrumb elements
+  for (let i = 0; i < path.length; i++) {
+    let crumb = document.createElement('a');
+    crumb.classList.add('breadcrumb');
+    crumb.innerText = ' > ' + getData(data, path);
+    breadcrumbs.appendChild(crumb);
+  }
+
+  // Put them together
   return breadcrumbs;
 }
 
@@ -328,6 +336,9 @@ function setupLinkListeners(pane: HTMLElement, data: any, path: string[]): void 
       new_pane.querySelector('h3').focus();
       // Reset the listeners
       setupLinkListeners(new_pane, data, path);
+      // Adjust the breadcrumbs
+      document.querySelector('nav').innerHTML = '';
+      document.querySelector('nav').appendChild(makeBreadcrumbs(data, path));
     });
   });
 }
