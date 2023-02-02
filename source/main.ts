@@ -1,5 +1,4 @@
 import { marked } from 'marked'
-import { DOMPurifyI } from 'dompurify';
 import * as DOMPurify from 'dompurify';
 
 let data_file_name = 'data/Test_Quiz.txt';
