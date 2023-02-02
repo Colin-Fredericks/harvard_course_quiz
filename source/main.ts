@@ -101,18 +101,18 @@ function buildStructure(grid: any[]): any {
     // The first colon is the separator between key and value.
     // Later colons are just part of the text.
     // TODO: Spaces after colons currently get trimmed out. Fix that.
-    let pieces = grid[i].text
-      .split(':')
-      .map((item: string) => item.trim());
+    let pieces = grid[i].text.split(':');
 
     let [key, value] = pieces;
 
+    key = key.trim();
+
     if (pieces.length > 2) {
-      value = pieces.slice(1).join(':');
+      value = pieces.slice(1).join(':').trim();
     }
 
     if (i === 0) {
-      data_structure.data.name = key;
+      data_structure.data.name = key.trim();
       continue;
     }
 
@@ -135,7 +135,7 @@ function buildStructure(grid: any[]): any {
       // Add the item to the contents
       path.push('contents');
       insertData(data_structure, path, key, {
-        data: { 'path': key},
+        data: { 'path': key },
         contents: {},
       });
       // Add the item to the path
@@ -202,6 +202,9 @@ function constructHTML(data: any): HTMLElement {
     options.appendChild(card);
   }
 
+  // Release the "used colors" after a set of cards is done.
+  used_colors = [];
+
   let divider2 = document.createElement('div');
   divider2.classList.add('divider');
 
@@ -221,8 +224,8 @@ function constructHTML(data: any): HTMLElement {
  * @returns {HTMLElement} The HTML element containing a single card.
  */
 function createCard(data: any, num_cards: number): HTMLElement {
-  console.debug('createCard');
-  console.debug(data);
+  // console.debug('createCard');
+  // console.debug(data);
   let width = String(Math.round(12 / num_cards));
 
   let card = document.createElement('div');
@@ -236,7 +239,7 @@ function createCard(data: any, num_cards: number): HTMLElement {
   card_div.classList.add('card', getRandomColor(), 'darken-2', 'hoverable');
   let card_content = document.createElement('div');
   card_content.classList.add('card-content', 'white-text');
-  let card_title = document.createElement('p');
+  let card_title = document.createElement('h4');
   card_title.classList.add('flow-text');
   let card_text = document.createElement('p');
   card_text.classList.add('flow-text', 'card-text');
@@ -296,20 +299,23 @@ function makeBreadcrumbs(data: any, path: string[]): HTMLElement {
   let home = document.createElement('a');
   home.href = '#!';
   home.classList.add('breadcrumb');
+  home.dataset.path = 'home';
+  home.dataset.position = '0';
   home.innerText = 'Home';
   breadcrumbs.appendChild(home);
-
   // Create the rest of the breadcrumbs
   for (let i = 1; i < path.length; i = i + 2) {
-    console.debug(path[i]);
-    console.debug(path.slice(0,i+1));
-    console.debug(data);
-    console.debug(getData(data, path.slice(0,i+1)));
-    let crumb = document.createElement('a');
-    crumb.href = '#!';
+    let crumb;
+    if(i === path.length - 1){
+      crumb = document.createElement('span');
+    }else{
+      crumb = document.createElement('a');
+      crumb.href = '#!';  
+    }
     crumb.classList.add('breadcrumb');
-    crumb.innerText = getData(data, path.slice(0,i+1)).data.breadcrumb;
+    crumb.innerText = getData(data, path.slice(0, i + 1)).data.breadcrumb;
     crumb.dataset.path = path[i];
+    crumb.dataset.position = String(i+1);
     breadcrumbs.appendChild(crumb);
   }
 
@@ -330,9 +336,9 @@ function setupLinkListeners(pane: HTMLElement, data: any, path: string[]): void 
       event.preventDefault();
       console.debug('Link clicked: ' + link.getAttribute('data-topic'));
       // Add the new path to the path array
-      // TODO: Need to include the "contents" containers here too.
       path.push('contents');
       path.push(link.getAttribute('data-topic'));
+      console.debug(path);
       // Get the html for where we're going
       let new_pane = constructHTML(getData(data, path));
       new_pane.classList.remove('ghost');
@@ -349,7 +355,7 @@ function setupLinkListeners(pane: HTMLElement, data: any, path: string[]): void 
       // Adjust the breadcrumbs
       document.querySelector('nav').innerHTML = '';
       document.querySelector('nav').appendChild(makeBreadcrumbs(data, path));
-      // setupBreadcrumbListeners();
+      setupBreadcrumbListeners(data);
     });
   });
 }
@@ -358,17 +364,48 @@ function setupLinkListeners(pane: HTMLElement, data: any, path: string[]): void 
  * @description: Set up the breadcrumb listeners.
  * @returns {void}
  */
-function setupBreadcrumbListeners(): void {
+function setupBreadcrumbListeners(data: any): void {
   // When someone clicks a breadcrumb...
   document.querySelectorAll('a.breadcrumb').forEach((crumb) => {
     crumb.addEventListener('click', (event) => {
       event.preventDefault();
 
+      // Build the path from the breadcrumb data-path attributes.
+      let path = [];
+      let all_crumbs = document.querySelectorAll('a.breadcrumb');
+      let crumbs = Array.from(all_crumbs);
+      for (let i = 1; i < crumbs.length; i++) {
+        path.push('contents');
+        path.push((crumbs[i] as HTMLElement).dataset.path);
+      }
+      console.debug(path);
+
+      // Trim the path to where we clicked.
+      path = path.slice(0, Number((event.target as HTMLElement).dataset.position) * 2);
+
       // Get the html for where we're going
+      let new_pane = constructHTML(getData(data, path));
+
+      // Slide the current page to the right and remove it
+      let current_pane = document.querySelector('.bigbox');
+      slideTransition(current_pane as HTMLElement, 'right', 'out');
+
+      // Slide the new page in from the left
+      new_pane.classList.remove('ghost');
+      document.querySelector('main').appendChild(new_pane);
+      slideTransition(new_pane, 'left', 'in');
+
+      // Set the focus to the new pane's header.
+      new_pane.querySelector('h3').focus();
+
+      // Reset the listeners
+      setupLinkListeners(new_pane, data, path);
+      // Adjust the breadcrumbs
+      document.querySelector('nav').innerHTML = '';
+      document.querySelector('nav').appendChild(makeBreadcrumbs(data, path));
+      setupBreadcrumbListeners(data);
     })
   });
-  // Slide the current page to the right and remove it
-  // Reset the listeners
 }
 
 /***********************

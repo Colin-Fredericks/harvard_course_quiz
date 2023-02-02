@@ -15,6 +15,11 @@ main {
   flex: 1 0 auto;
 }
 
+h4 {
+  font-weight: bold;
+}
+
+
 #breadcrumbs {
   border: none;
 }
@@ -37,6 +42,11 @@ main {
   position: relative;
 }
 
+.breadcrumb::before{
+  content: ">";
+  font-weight: bold;
+}
+
 .footer-copyright {
   border: none;
   padding: .5em;
@@ -46,6 +56,10 @@ main {
 .ghost {
   opacity: 0;
   display: none;
+}
+
+.card p{
+  font-size: 1.2em;
 }
 
 /* Slide animations */

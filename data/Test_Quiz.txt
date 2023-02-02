@@ -71,7 +71,7 @@
 		Cooking
 			Title: Cooking
 			Breadcrumb: Learning for Fun
-			Text: Let's get scientific about it with (Science & Cooking: From Haute Cuisine to Soft Matter Science](https://www.edx.org/course/science-cooking-from-haute-cuisine-to-soft-matte-2)!
+			Text: Let's get scientific about it with [Science & Cooking: From Haute Cuisine to Soft Matter Science](https://www.edx.org/course/science-cooking-from-haute-cuisine-to-soft-matte-2)!
 			Image: justice.png
 			Alt: image alt text
 		Music
